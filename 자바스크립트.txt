@@ -1,0 +1,592 @@
+//form에 날짜넣기(실시간)
+<script>
+		const today = new Date().toISOString().split('T')[0]  //new Date.tiISOString() -> 2021-12-10T04:42:08.128Z
+		document.querySelector('input[type="date"]').value=today
+</script>
+=======================================================================
+<%@ include file="header.jsp" %>
+//alert-box 띄우기
+<div id="alert" class="jcce aice ffc" 
+		 style="border: 2px solid black;
+		 		box-shadow: 5px 5px grey;
+		 		width: 500px;
+		 		height: 300px;
+		 		margin: 50px auto;
+		 		border-radius: 25px;
+		 		
+		 		opacity: 0;
+		 		position: absolute;
+		 		top: 50%;
+		 		left: 25%;
+		 		transition-duration: 0.5s">
+		<div style="font-size: 16px; font-weight: bold; margin: 30px;">
+			${msg }
+		</div>
+		<button class="btn">확인</button>
+	</div>
+	<script>
+		const cpath='${cpath}'
+		const msg = '${msg}'
+		const url = '${url}' //로그인성공시 /login으로 , 실패시 공백으로 넘겨줬었다(MemberController)
+		
+		window.onload = function(event) { //문서가 로드되면 event가 실행
+			const alert = document.getElementById('alert')
+			alert.style.opacity = 1;
+			alert.style.top = '30%';
+		}
+		document.querySelector('button').onclick = function() {
+			if(url == '') { //주소가없으면 이전페이지로 
+	 			history.go(-1); //입력했던 값이 남아있다.
+	 		}
+	 		else{
+	 			location.href= cpath + '/' +url	
+	 		}
+		}
+===================================================================================
+//login확인
+<script>
+		const flag = '${not empty login}'
+		let url = '${cpath}'	// 로그인 성공시 이동할 주소는 기본적으로 대문페이지 이지만 
+		
+		if(flag == 'true') {							// 로그인에 성공했으면서
+			if('${not empty param.url}' == 'true') {	// 파라미터 url이 존재한다면
+				url = '${param.url}'					// url 변수에 파라미터 값을 넣어주고
+			}	
+			location.href = url		// 기본값 혹은 전달받은 파라미터 주소로 페이지를 이동한다
+									// 세션에 저장된 내용은 페이지 이동에 상관없이 참조할 수 있다
+		}								
+		else {
+			alert('로그인 실패 !!')
+			history.go(-1)
+		}
+	</script> 
+=========================================================================================
+// for, while, forEach 방식 
+console.log('## for ##');
+const colors = ['red', 'blue', 'green'];
+for (let i = 0; i < colors.length; i++) {
+	console.log( colors[i] );
+}
+
+console.log('## while ##');	
+var i=0;
+while (colors[i] != null) {
+  console.log( colors[i] );
+  i++;
+}
+
+console.log('## forEach ##');
+colors.forEach(function(value) {
+  console.log(value);
+});
+
+console.log('## forEach with Arrow ##');
+colors.forEach( value => console.log(value));
+
+
+const colors = ['red', 'blue', 'green'];
+
+console.log('## for-in ##');
+for (var index in colors) {
+	console.log( colors[index] );
+}
+
+console.log('## for-of-for ##');
+for (var value of colors) {
+	console.log( value );
+}
+============================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th,td {
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 20px;
+        }
+        th {
+            background-color: #dadada;
+        }
+        .root {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <script src="ex01.js"></script>
+    <h1>필터링과 정렬</h1>
+    <hr>
+    <div class="root">
+        <div class="left">
+            <fieldset>
+                <p><label><input type="radio" name="agefilter" value="10">10대</label></p>
+                <p><label><input type="radio" name="agefilter" value="20">20대</label></p>
+                <p><label><input type="radio" name="agefilter" value="30">30대</label></p>
+                <p><label><input type="radio" name="agefilter" value="40">40대</label></p>
+            </fieldset>
+            <fieldset>
+                <p><label><input type="radio" name="genderfilter" value="남성">남성</label></p>
+                <p><label><input type="radio" name="genderfilter" value="여성">여성</label></p>
+            </fieldset>
+        </div>
+        <div class="right">
+            <table>
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>나이</th>
+                        <th>성별</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        //List<DTO> list =Arrays.asList(new DTO[] {dto1,dto2,dto3});
+        //list.forEach(dto) -> {
+        //    System.out.println(dto.getName());
+        //}
+
+        const arr = [
+            {name: '이지은', age: 29, gender: '여성'},
+            {name: '홍진호', age: 40, gender: '남성'},
+            {name: '나단비', age: 7, gender: '여성'},
+            {name: '해적왕', age: 18, gender: '남성'},
+            {name: '이병건', age: 39, gender: '남성'},
+        ]
+
+        const tbody = document.querySelector('.right tbody')
+        tbody.innerHTML = ''
+        arr.forEach(dto => {
+            const tr = convert(dto)  //함수작성은 맨위에
+            tbody.appendChild(tr)
+        })
+
+        const boxList = document.querySelectorAll('.left input[type="radio"]')
+        console.log(boxList)
+        boxList.forEach(box=>box.onclick = filterHandler)
+    </script>
+</body>
+</html>
+-------------
+
+//함수작성은 여기서
+function convert(dto) {
+    const tr = document.createElement('tr')
+    for(key in dto)  { //객체의 속성만큼 반복
+        const td1 = document.createElement('td')
+        const value = dto[key]
+        td1.innerText = value
+        tr.appendChild(td1)
+    }
+    return tr
+}
+
+//중복필터
+function filterHandler(event) {
+    //console.log(event.target.name) // radio버튼을 클릭함에 따라 agefilter, namefilter 가 나온다 
+    
+    //클릭할때마다 선택되어 있는 필터항목만 가져온다(input에서 체크되있는것만 가져와라)
+    const checkedFilter = document.querySelectorAll('.left input:checked')
+    checkedFilter.forEach(element => console.log(element.dataset))
+    console.log(checkedFilter)//nodeList[input]
+
+    const ob = {}  //빈 객체선언
+    checkedFilter.forEach(e => ob[e.name] = e.value) //비어있는 객체에 값 넣기 -> 체크되있는 거만 ob[e.name]하면 생긴다 , 
+    console.log(ob) //10대를(age)클릭하면 filterage: 10 만나온다
+    //arr.filter는 원본은 변경하지않고, 변경된 배열을 반환한다 <--> sort는 원본변경
+    const filterArr = arr.filter(dto => { 
+        let flag = true
+        const flag1 = +ob.agefilter <= dto.age && dto.age < +ob.agefilter +10
+        const flag2 = ob.genderfilter == dto.gender
+        if(ob.agefilter != undefined) { //체크를 하면
+            flag = flag && flag1
+            console.log('agefilter: ' + flag)
+        }
+        
+        if(ob.genderfilter != undefined) { 
+            flag = flag && flag2
+            console.log('genderfilter: ' + flag)
+        }
+        console.log('result: '+flag)
+        return flag
+    })
+    tbody.innerHTML = ''
+    filterArr.forEach(dto => {
+        const tr = convert(dto)
+        tbody.appendChild(tr)
+    })
+}
+
+================================================================================================================
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link type="text/css" rel="stylesheet" href="quiz01.css">
+</head>
+<body>
+    <script src="quiz01.js"></script>
+    <h1>중복 선택 가능한 필터와 정렬</h1>
+    <hr>
+    <h3>음식을 주제로 사진, 이름, 가격, (카테고리)로 데이터를 구성하고 기능적용하세요</h3>
+
+    <div class="root">
+        <div class="left">
+            <div class="filter category">
+                <label><input type="checkbox" name="category" value="한식">한식</label>
+                <label><input type="checkbox" name="category" value="일식">일식</label>
+                <label><input type="checkbox" name="category" value="중식">중식</label>
+                <label><input type="checkbox" name="category" value="양식">양식</label>
+                <label><input type="checkbox" name="category" value="분식">분식</label>
+            </div>
+            <div class="filter price">
+                <label><input type="checkbox" name="price" value="0">1만원 미만</label>
+                <label><input type="checkbox" name="price" value="10000">1만원 대</label>
+                <label><input type="checkbox" name="price" value="20000">2만원 대</label>
+                <label><input type="checkbox" name="price" value="30000">3만원 대</label>
+                <label><input type="checkbox" name="price" value="40000">4만원 이상</label>
+
+            </div>
+            <div class="sort">
+                <label><input type="radio" name="sort" value="name">이름순</label>
+                <label><input type="radio" name="sort" value="price">가격순</label>
+            </div>
+        </div>
+        <div class="right"></div>
+    </div>
+
+    <script>
+        const arr = getDataArray()
+        const right = document.querySelector('.right')
+        const dom = getDom(arr)
+        render(right, dom)
+
+        const categoryFilterList = document.querySelectorAll('.left input')
+        categoryFilterList.forEach(element => element.addEventListener('click', filterHandler))
+    </script>
+
+
+</body>
+</html>
+-----------------
+function getDataArray() {
+    const arr = [
+        {category: '한식', name: '소고기전골', price: '30000', img: 'https://sjnfzdfjrjgl1655541.cdn.ntruss.com/goods/3/2020/11/522_tmp_486b82934924f4ccb46ed67c4095e8fb6417view.jpg'},
+        {category: '중식', name: '나가사키짬뽕', price: '8500', img: 'https://w.namu.la/s/da28524841fa2a5b638f9a3977c8461bd5b5b5c02d3aa1bb24bbacb7aea04e535aca56168be0508f1e2f8dca08fa5a3b50119aed97e42c5ae6b0646f152551ce8410a25718d30b8809524ae4a7eca31d'},
+        {category: '일식', name: '초밥', price: '17000', img: 'https://rimage.gnst.jp/livejapan.com/public/article/detail/a/00/00/a0000370/img/basic/a0000370_main.jpg?20201002142956&q=80&rw=750&rh=536'},
+        {category: '양식', name: '로제크림파스타', price: '23500', img: 'https://recipe1.ezmember.co.kr/cache/recipe/2019/03/03/fca1b1c8f05592f409b6fbe702e2112a1.jpg'},
+        {category: '한식', name: '돼지국밥', price: '7500', img: 'https://folkency.nfm.go.kr/upload/img/20190304/20190304095002_t_.jpg'},
+        {category: '일식', name: '치즈돈까스', price: '9000', img: 'https://mblogthumb-phinf.pstatic.net/MjAxOTAzMDlfMTUz/MDAxNTUyMTM0Nzk4NjQ5.m-E374BrP6gDkKCQAOoDPPBPipt8AVeOmm51uwsVx1gg.2C3J3SeDRXXsHV-OrGZG5G_tLhHmR6Bqd1Aagf7_3v4g.JPEG.fredda/20190302004143.JPG?type=w800'},
+        {category: '분식', name: '참치김밥', price: '4500', img: 'https://recipe1.ezmember.co.kr/cache/recipe/2020/09/22/166346648fac6569fe71776696cabd1d1.jpg'},
+        {category: '중식', name: '오향장육', price: '29000', img: 'https://ww.namu.la/s/c8ef74e18b1f324d707c7bf564a4c83a7d2193c7a9897af72cdea5552a0fc732000e07be1b8cb2bce1125b628d09e96a2e8ca7a65ec7eae060758c74284b15f7b6e5618240f881a82a07e8d6dfeb36c7857592314aeadf8422f1a39fb5b5d2e4'},
+        {category: '일식', name: '타코와사비', price: '12000', img: 'https://img-cf.kurly.com/shop/data/goodsview/20180913/gv10000032046_1.jpg'},
+        {category: '분식', name: '떡볶이', price: '10000', img: 'https://cdn.meesig.com/v3/prod/image/item/mainpage/907/ad4474bef39c4167b84477eaa7a5052f20210708171733.'},
+        {category: '양식', name: '스테이크', price: '49000', img: 'https://ww.namu.la/s/3c37e944ae486477fea075e4bff27a9c696e0ad1016535bbaac3bbd31a8ec55a0f7be21bd6fa7f41b1bc00832e4fba6d2ec14e36bd99ed7f9418c25844393869f317186b7ccd335c66411a0df5ed29ac0b7f89194a61156fc75bf6467e62762b'},
+    ]
+    return arr
+}
+
+function getDom(arr) {
+    let dom = ''
+    arr.forEach(dto => {
+        dom += `<div class="item">`
+        dom += `<div><img src="${dto.img}"></div>`
+        dom += `<div><strong>${dto.name}</strong></div>`
+        dom += `<div>가격 : ${dto.price}</div>`
+        dom += `<div>분류 : ${dto.category}</div>`
+        dom += `</div>`
+    })
+    return dom
+}
+
+function render(target, dom) {
+    target.innerHTML = ''
+    if(typeof dom == 'string')      target.innerHTML = dom
+    else                            target.appendChild(dom)
+}
+
+function filterHandler(event) {
+    const categoryFilterArray = Array.from(document.querySelectorAll('.left input[name="category"]:checked')).map(v => v.value)
+    const priceFilterArray = Array.from(document.querySelectorAll('.left input[name="price"]:checked')).map(v => +v.value)//input은 type,value 등 도 있는데 value로만 배열을 재구성(map은 재배열함수이다, 자바의 hashmap이 아니다)
+    const sort = document.querySelector('.left input[name="sort"]:checked')
+
+    console.log(categoryFilterArray)
+    console.log(priceFilterArray)
+    console.log(sort)
+    console.log('')
+
+    const result = arr.filter(dto => {
+        // 카테고리
+        const flag1 = categoryFilterArray.includes(dto.category)
+
+        // console.log(Math.floor(dto.price / 10000) * 10000)
+        const flag2 = priceFilterArray.includes(Math.floor(dto.price / 10000) * 10000)
+
+        let flag = true
+        if(categoryFilterArray != 0) {  
+            flag = flag && flag1
+            console.log(flag)
+        }
+        if(priceFilterArray != 0)  {
+            flag = flag && flag2
+            console.log(flag)
+        } 
+        return flag
+    })
+    if(sort != null) {  //사용자입장에서 가격순, 이름순으로 정렬체크를 안할수도 있고 할수도 있다. 
+        switch(sort.value) {
+            case 'price':
+                result.sort((a, b) => +a[sort.value] > +b[sort.value] ? 1 : -1) //price.value에 접근-> 정수형으로 바꿨다(+)
+                break
+            case 'name':
+                result.sort((a, b) => a[sort.value] > b[sort.value] ? 1 : -1)
+                break
+        }
+    }
+
+    render(right, getDom(result))
+}
+=============================================================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th,td {
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 20px;
+        }
+        th {
+            background-color: #dadada;
+        }
+        .root {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <script src="ex03.js"></script> <!--ex03.js에 필요한 모든 함수를 정의할 예정-->
+    <h1>필터링과 정렬</h1>
+    <hr>
+    <div class="root">
+        <div class="left">
+            <fieldset>
+                <p><label><input type="checkbox" name="agefilter" value="10">10대</label></p>
+                <p><label><input type="checkbox" name="agefilter" value="20">20대</label></p>
+                <p><label><input type="checkbox" name="agefilter" value="30">30대</label></p>
+                <p><label><input type="checkbox" name="agefilter" value="40">40대</label></p>
+            </fieldset>
+        </div>
+        <div class="right">
+            <table>
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>나이</th>
+                        <th>성별</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        //여기에는 문서에서 요소를 불러오거나
+        //함수로 객체를 불러와서
+        //여러 함수를 호출하여 데이터를 처리하고 화면에 반영하는 작업
+        //이벤트함수연결
+        const data = getData()  //데이터를 불러오고(ex03.js)
+        const tbody = document.querySelector('.right tbody')  //HTML요소불러와서
+        const dom = getDom(data) //데이터를 dom으로 변환하고
+        render(tbody,dom) //dom을 html요소에 그린다(첫화면)
+
+        const boxList = document.querySelectorAll('.left input[type="checkbox"]');
+        boxList.forEach(box => box.onclick = filterHandler)  //클릭하면 함수실행
+    </script>
+</body>
+</html>
+--------------------
+function getData() {
+    const arr = [
+        {name: '이지은', age: 29, gender: '여성'},
+        {name: '홍진호', age: 40, gender: '남성'},
+        {name: '나단비', age: 7, gender: '여성'},
+        {name: '해적왕', age: 18, gender: '남성'},
+        {name: '이병건', age: 39, gender: '남성'},
+    ]
+    return arr
+}
+
+function getDom(data) { //데이터를 받아서 문자열 태그형식으로 반환
+    let dom = ''
+    data.sort((a,b) => a.age > b.age ? 1 : -1)
+    data.forEach(dto =>  {
+        dom += `<tr><td>${dto.name}</td><td>${dto.age}</td><td>${dto.gender}</td></tr>`
+    })
+    return dom
+}
+
+function render(target, dom) { //대상과 돔을 받아서 대상에 dom을 그리기
+    console.log(typeof dom) //string
+    target.innerHTML = ''
+    if(typeof dom =='string') target.innerHTML += dom;
+    else                      target.appendChild(dom)
+    
+}
+ 
+function filterHandler(event) {
+    const checkedFilterList = document.querySelectorAll('input:checked')
+    console.log(checkedFilterList)
+    const checkedFilterArray = Array.from(checkedFilterList).map(v=>+v.value) //list를 배열로만들어서 map함수를 호출(inputtag: v , +v.value = checked된값(정수로바꿔서))
+    if(checkedFilterArray == 0){
+        render(tbody, getDom(data))
+        return
+    }
+    // console.log(data)
+    // console.log(tbody)
+    //console.log(checkedFilter)
+    const filterArr = data.filter(dto => {
+        //10의 자리수만 (10,20,30 이렇게 나옴)
+        const age = Math.floor(dto.age/10) * 10
+        return checkedFilterArray.includes(age)  //dto.age가 checkedFilterArray에 포함되있으면
+    })
+
+    //filterArr.sort((a,b) => a.age > b.age ? 1 : -1) //정렬하고 아래 render
+    //위에서 정렬한 배열을(filterArr) 여기에 매개변수로 넣기
+    render(tbody, getDom(filterArr))  //내가빼낸 배열을 tbody안에 그려라
+}
+====================================================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th,td {
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 20px;
+        }
+        th {
+            background-color: #dadada;
+        }
+        .root {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <script src="ex01 copy.js"></script>
+    <h1>필터링과 정렬</h1>
+    <hr>
+    <div class="root">
+        <div class="left">
+            <fieldset>
+                <p><label><input type="radio" name="agefilter" data-age="10">10대</label></p>
+                <p><label><input type="radio" name="agefilter" data-age="20">20대</label></p>
+                <p><label><input type="radio" name="agefilter" data-age="30">30대</label></p>
+                <p><label><input type="radio" name="agefilter" data-age="40">40대</label></p>
+            </fieldset>
+            <fieldset>
+                <p><label><input type="radio" name="genderfilter" value="남성">남성</label></p>
+                <p><label><input type="radio" name="genderfilter" value="여성">여성</label></p>
+            </fieldset>
+        </div>
+        <div class="right">
+            <table>
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>나이</th>
+                        <th>성별</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        //List<DTO> list =Arrays.asList(new DTO[] {dto1,dto2,dto3});
+        //list.forEach(dto) -> {
+        //    System.out.println(dto.getName());
+        //}
+
+        const arr = [
+            {name: '이지은', age: 29, gender: '여성'},
+            {name: '홍진호', age: 40, gender: '남성'},
+            {name: '나단비', age: 7, gender: '여성'},
+            {name: '해적왕', age: 18, gender: '남성'},
+            {name: '이병건', age: 39, gender: '남성'},
+        ]
+
+        const tbody = document.querySelector('.right tbody')
+        tbody.innerHTML = ''
+        arr.forEach(dto => {
+            const tr = convert(dto)  //함수작성은 맨위에
+            tbody.appendChild(tr)
+        })
+
+        const boxList = document.querySelectorAll('.left input[type="radio"]')
+        console.log(boxList)
+        boxList.forEach(box=>box.onclick = filterHandler)
+    </script>
+</body>
+</html>
+----------------
+
+//함수작성은 여기서
+function convert(dto) {
+    const tr = document.createElement('tr')
+    for(key in dto)  { //객체의 속성만큼 반복
+        const td1 = document.createElement('td')
+        const value = dto[key]
+        td1.innerText = value
+        tr.appendChild(td1)
+    }
+    return tr
+}
+
+function filterHandler(event) {
+    console.log(event.target)
+    const age = +event.target.dataset.age //숫자로불러와라 (+)
+    console.log(age)
+    console.log(arr) //html파일에서 실행되기때문에(선언된곳이 html내부라서) 그래서 arr도 부를수있다 
+    
+    //arr.filter는 원본은 변경하지않고, 변경된 배열을 반환한다 <--> sort는 원본변경
+    const filterArr = arr.filter(dto=> age <= dto.age && dto.age < age+10)
+    tbody.innerHTML = ''
+    filterArr.forEach(dto => {
+        const tr = convert(dto)
+        tbody.appendChild(tr)
+    })
+}
+
+=================================================================================================
