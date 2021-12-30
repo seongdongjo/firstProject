@@ -163,7 +163,6 @@ nav > ul > li {
 	//fetch next 5 rows only; //5개
 ==============================================
 a가 부모요소일때 b는 a안에서 움직인다.
-c는 fixed인데 이거는 부모요소 무시하고 그냥 브라우저 기준이다.
 		div#a {
 			width: 300px;
 			height: 300px;
@@ -177,16 +176,5 @@ c는 fixed인데 이거는 부모요소 무시하고 그냥 브라우저 기준�
 			position: absolute;
 			top: 0px;
 			left: 100px;
-		}
-		div#c {
-
-			background: #C5FF63;
-
-			position: fixed;
-
-			top: 0px;
-
-			left: 200px;
-
 		}
 =========================================================================
