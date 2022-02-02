@@ -590,3 +590,664 @@ function filterHandler(event) {
 }
 
 =================================================================================================
+function getDom(json) {
+console.log('getDom호출!!')
+
+let tag = '<div>';
+json.forEach(dto => {
+tag += '<div><img src="' +dto.filesource + '"style="box-shadow: 0 4px 4px -4px gray;"></div>'
+tag += '<div>'+ dto.menuname +'</div>'
+tag += '<div style="font-size: 0.8rem; color: #44900c;">가격 ￦ '+ dto.price + '</div>'
+tag += '<div style="font-size: 0.8rem;">'+ dto.kcal +'Kcal</div>'
+})
+tag += '</div>'
+return tag;
+}
+============================================================================================
+#)해시맵으로 받으면(json(DTO)를) key값이 대문자로 넘어온다. 그래서 render할 때 dom에서 dto.IMG이렇게 받아야한다.
+
+map.put("title","자동차정비")
+for(String key : map.keySet()) {
+	System.out.println(key + ", " + map.get(key));
+}
+
+위와 같은 개념이다.
+
+const formData = new FormData(event.target)
+	for(key of formData.keys()) {
+		console.log(key,formData.get(key))
+}
+============================================================================
+<h1>이미지 갤러리</h1>
+<form method="POST" enctype="multipart/form-data" action="${cpath }/upload2">
+	<p><input type="file" name="uploadFile" required></p>
+	<p><input type="hidden" name="username" value="${login.username }"></p>
+	<p><input type="submit" value="전송"></p>  <!-- form 안에 button을 넣으면  -->
+</form>
+
+<div style="display: flex; width: 800px; flex-flow: wrap; border: 2px solid black; padding: 20px;" >
+		<c:forEach var="dto" items="${list }">
+			<div style="border: 1px solid blue; padding: 10px; margin-right: 10px; box-sizing: border-box; width: 45%; height: 250px; margin-bottom: 5px;">
+					<img src="${cpath}/upload/${dto.modname }">
+					<div>작성자:  ${dto.username }</div>
+					<button class="deleteBtn" data-del="${dto.idx }">삭제</button>
+					<button class="modifyBtn" data-mod="${dto.idx }">수정</button>
+			</div>
+		</c:forEach>
+</div>
+
+	<script>
+		const cpath = '${cpath}'
+	
+		const deleteList = document.querySelectorAll('.deleteBtn')
+		console.log(deleteList)
+		deleteList.forEach(btn => {
+			btn.onclick=function(event) {
+				const idx = event.target.dataset.del
+				location.href = cpath + '/delete/' + idx 
+			}
+		})
+		
+		const modifyList = document.querySelectorAll('.modifyBtn')
+		modifyList.forEach(btn => {
+			btn.onclick=function(event) {
+				const idx = event.target.dataset.mod
+				location.href = cpath + '/modify/' + idx 
+			}
+		})
+	</script>
+============================================================================
+Hash 처리 -> DB에 password컬럼을 varchar(500)을 잡는 이유는 hash처리때문이다.
+- 데이터를 보안하는 방법에는 크게 2가지로 나눈다
+1)Hash : 단방향 -> 원래있던데이터를 뭉갠다.(원본복구불가능, 데이터를 아주 잘게 자른다(데이터성질자체는 안바뀐다)일치여부 판단가능)
+2)Encryption: 양방향 변환, 키가 있으면 원본데이터로 돌려놓는것이 가능(SSL, SSH, HTTPS -> 암호화해서 나중에 다시 알아볼수있게가능)
+
+요청 -> 디스패처는 매핑된 컨트롤러를 찾는다.(homecontroller를 지운다면)
+servlet.context에서 설정
+<view-controller path="/" view-name="home"/> 이렇게하면 홈컨트롤러가없음에도 jsp가 뜬다
+<!-- 
+		컨트롤러의 특정 수행내용없이 단순히 view를 띄우기 위해서라면
+		dispatcherServlet이 곧바로 viewName을 지정해서 jsp로 포워딩하게 설정한다.
+		
+		주의점) 메서드 구분할 수 없음(GET/POST) 즉, 어떤메서드던지 jsp로 간다면
+		모든 방식의 메서드에 대해서 작동한다.
+-->
+===============================================================================
+ajax로 요청시 주소창이 바뀌면안된다 (파라미터가 주소창에 찍히거나 등등)
+
+iterable 인터페이스에 iterator()란 메서드가 있고 -> hasNext(), next() 메서드가 있다.
+
+//for-each에서는 삭제불가능
+for (String i : list) {
+    System.out.println(i);
+    list.remove(i); // throws exception
+} 
+
+Iterator it=list.iterator();
+while (it.hasNext()){
+    System.out.println(it.next());
+    it.remove(); // valid here
+}
+==================================================================================
+#)JSON 과 자바스크립트객체
+#)JSON.stringify
+JSON.stringify() 메소드는 인수로 전달받은 자바스크립트 객체(JSON형식)를 문자열로 변환하여 반환합니다.
+
+
+var dog = {name: "식빵", family: "웰시코기", age: 1, weight: 2.14}; // 자바스크립트 객체
+var data = JSON.stringify(dog);                    // 자바스크립트 객체를 문자열로 변환함.
+
+document.getElementById("json").innerHTML = data;
+-->{"name":"식빵","family":"웰시코기","age":1,"weight":2.14}  //문자열로 변환하면 key가  ""처리가된다
+
+-------------
+#)JSON.parse
+JSON.parse() 메소드는 JSON.stringify() 메소드와는 반대로 인수로 전달받은 문자열(json문자열)을 자바스크립트 객체로 변환하여 반환합니다.
+var data = '{"name": "식빵", "family": "웰시코기", "age": 1, "weight": 2.14}'; // JSON 형식의 문자열
+var dog = JSON.parse(data);                       // JSON 형식의 문자열을 자바스크립트 객체로 변환함.
+document.getElementById("json").innerHTML = dog + "<br>";
+document.getElementById("json").innerHTML += dog.name + ", " + dog.family;
+//결과(자바스크립트 객체로 변환했기때문에->parse .(점)으로 접근가능
+[object Object]
+식빵, 웰시코기
+
+------------
+#)date
+<p id="json"></p>
+
+	<script>
+		var date = new Date();		// 자바스크립트 Date 객체
+		var str = date.toJSON();	// Date 객체를 JSON 형식의 문자열로 변환함.
+
+		document.getElementById("json").innerHTML = date + "<br>";
+		document.getElementById("json").innerHTML += str;
+	</script>
+//결과
+Sun Jan 02 2022 22:26:00 GMT+0900 (한국 표준시) // 자바스크립트 Date 객체
+2022-01-02T13:26:00.536Z // Date 객체를 JSON 형식의 문자열로 변환함.
+==========================================================================
+public String burger()
+return "/menu/burger" --> /WEB-INF/views/menu/burger.jsp로
+
+같다.
+
+@GetMapping("/burger")
+public void burger() {}
+=================================================================================
+#)잘못된 객체병합
+var car = {
+    weight: 3.5,
+    color: 'red',
+    speed: 50
+}
+ 
+var truckSpecific = {
+    availableWeight: 25,
+    registerYn: true
+}
+ 
+var superCarSpecific = {
+    zeroToHundred: 3.4,
+    convertable: false
+}
+ 
+var truck = Object.assign(car, truckSpecific);
+var superCar = Object.assign(car, superCarSpecific);
+ 
+console.log(truck);  
+// {weight: 3.5, color: 'red', speed: 50, availableWeight: 25, registerYn: true}
+console.log(superCar); 
+// {weight: 3.5, color: 'red', speed: 50, availableWeight: 25, registerYn: true, zeroToHundred: 3.4, convertable: false }
+
+========================================================================================
+#)객체 병합
+var car = {
+    weight: 3.5,
+    color: 'red',
+    speed: 50
+}
+ 
+var truckSpecific = {
+    availableWeight: 25,
+    registerYn: true
+}
+ 
+var superCarSpecific = {
+    zeroToHundred: 3.4,
+    convertable: false
+}
+ 
+var truckTarget = JSON.parse(JSON.stringify(car));
+var superCarTarget = JSON.parse(JSON.stringify(car));
+ 
+var truck = Object.assign(truckTarget, truckSpecific);
+var superCar = Object.assign(superCarTarget, superCarSpecific);
+ 
+console.log(truck);  
+// {weight: 3.5, color: 'red', speed: 50, availableWeight: 25, registerYn: true}
+console.log(superCar); 
+// {weight: 3.5, color: 'red', speed: 50, zeroToHundred: 3.4, convertable: false }
+=======================================================================================
+#)db에있는값으로 검색자동완성
+<input type="search" name="search" list="search-list" autocomplete="off">
+<datalist id="search-list">
+	<option>부산 광안리</option>  //option안의 값은 db에서 불러온다
+	<option>부산 광안리</option>
+	<option>부산 광안리</option>
+	..
+</datalist>
+============================================================================================
+#)form태그안에 div
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>home.jsp</title>
+<style>
+	h3 {
+		margin: 5px;
+	}
+	.box {
+		width: 500px;
+		box-sizing: border-box;
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		border: 2px solid black;
+		border-radius: 10px;
+		margin-top: 10px;
+		padding: 10px;
+	}
+	.hidden {
+		display: none;
+	}
+</style>
+</head>
+<body>
+	<h1>day15 - hash, mail</h1>
+	<hr>
+	
+	<form id="sendMailForm">
+		<div class="box">
+			<h3>이메일 주소 입력</h3>
+			<div>
+				<input type="email" name="email" placeholder="이메일 주소" required autofocus autocomplete="off">
+				<input type="submit" value="인증번호 전송">
+			</div>
+			<div id="sendMailMsg"></div>
+		</div>
+	</form>
+	
+	<form id="authMailForm" class="hidden">
+		<div class="box">
+			<h3>인증번호 입력</h3>
+			<div class="timer"></div>
+			<div>
+				<input type="text" name="auth" placeholder="인증번호를 입력하세요">
+				<input type="submit" value="전송">
+			</div>
+			<div id="authMailMsg"></div>
+		</div>
+	</form>
+	
+	<script>
+	 //이메일전송누르면 썻던 이메일을 나두기위해서 ajax를 쓴다
+	 const sendMailForm = document.getElementById('sendMailForm')
+	 const sendMailMsg = document.getElementById('sendMailMsg')
+	 const authMailForm = document.getElementById('authMailForm')
+	 const authMailMsg = document.getElementById('authMailMsg')
+	 const cpath = '${pageContext.request.contextPath}'
+	 let second = 5
+	 let interval = 0
+	       function timer() {
+	            console.log('interval')
+	    
+	            let min = Math.floor(second/60) + '' //정수처리를위해
+	            let sec = second % 60 +''
+	            if(min.length < 2) min = '0' + min
+	            if(sec.length < 2) sec = '0' + sec
+	            const format = min + ' : '  + sec  //자바스크립트는 ${min} el태그 안된다
+	            const div = document.querySelector('.timer')
+	            div.innerText = format
+	            if(second <= 0) {
+	            	div.style.color = 'red'
+	                clearInterval(interval)
+	                authMailForm.querySelector('input').placeholder='유효시간이 지났습니다'
+	                authMailForm.querySelector('input').disabled='disabled'
+	            	
+	                authMailMsg.innerText = '인증번호를 다시발송해주세요'
+	                authMailMsg.style.color='red'
+	            }
+	            second -= 1
+	        }
+	 function sendMailHandler(event) {
+		 event.preventDefault()
+		 const email = event.target.querySelector('input[name="email"]')
+		 const url = cpath + '/mailto/' + email.value + '/'  //pathVariable를 쓸때 특수문자를 위해서 /로 끝나게해야한다. //요청과 응답의 주소가 다르면 -> 크로스오리진
+		 //const url ='http://192~/day15~' //이렇게하면안된다. 그래서 controller에서 @CrossOrigin을 써주면 들어오는 요청을 허용하겠다라는것이된다. 이렇게 열어줘야 url='http~' 가능하다
+		 
+		 const opt = {
+			 method: 'GET'
+		 }
+		 fetch(url, opt)
+		 .then(resp => resp.json())
+		 .then(json => {
+			console.log(json)
+			sendMailMsg.innerText=json.message
+			sendMailMsg.style.color = json.status == 'OK' ? 'blue' : 'red'
+			if(json.status == 'OK') {
+				authMailForm.classList.remove('hidden')
+				
+				interval = setInterval(timer,1000)  //멈추고싶으면 clearInterval(interval)
+				second = 180 //메일을 보내고 나면 시간을 초기화한다
+				authMailForm.querySelector('input').disabled=''
+				authMailForm.querySelector('input').placeholder='인증번호를 입력하세요'
+				authMailForm.querySelector('input').focus()
+				authMailMsg.innerText=''
+			}
+		 })
+	 }
+	 //인증번호를 입력하면 작동하는 함수
+	 function authMailHandler(event) {
+		 event.preventDefault()
+		 if(second <= 0) {
+			 alert('유효시간이 지났습니다. 다시 메일을 보내주세요')
+			 return //유효시간이 만료되었다면 이후 코드를 진행하지 않는다
+		 }
+		 //form에 name="auth"를 불러오자
+		 const auth = event.target.querySelector('input[name="auth"]')
+		 const url = cpath + '/getAuthResult/' + auth.value + '/'
+		 const opt = {
+			 method: 'GET'
+		 }
+		 fetch(url, opt)
+		 .then(resp => resp.json())
+		 .then(json => {
+			//console.log(json)
+			authMailMsg.innerText = json.message
+			if(json.status == 'OK') {
+				authMailMsg.style.color = 'blue'
+				auth.disabled = 'disabled' //인증이 완료되면 더이상 인증번호를 바꿀수없게끔 한다.(입력창을 수정못한다는 소리)
+				//인증에 통과했을 경우 진행할 수 있는 다음 버튼을 보여주거나 하면된다.
+				clearInterval(interval)  //인증이 다되면 타이머가 진행되지않도록 막자
+				document.querySelecotr('.timer').innerHTML='' //시간도 지우고
+			}
+			else {
+				authMailMsg.style.color = 'red'
+				auth.select() //틀리면 인증번호가 드래그된다.
+			}
+		 })
+		 
+	 }
+	 //페이지이동하면안된다. -> preventdefault
+	 sendMailForm.onsubmit = sendMailHandler
+	 authMailForm.onsubmit = authMailHandler
+	</script>
+</body>
+</html>
+==============================================================================================
+#)hashmap
+String result = mailService.sendMail(email, authNumber, account);  //account에는 이메일계정/비밀번호 들어가있다
+		
+		HashMap<String,String> ret = new HashMap<String, String>();
+		if(result.equals(authNumber)) {
+			ret.put("status", "OK");
+			ret.put("message", "인증번호가 발송되었습니다");
+		}
+		else {
+			ret.put("status", "FAIL");
+			ret.put("message","인증번호 발송에 실패했습니다");
+		}
+		
+		return ret;
+===========================================================================
+#)jsp
+<form>
+	<input type="checkbox:" name="name" values="ㅇㅇㅇ">
+	<input type="checkbox:" name="name" values="ㄴㄴㄴ">
+	<input type="checkbox:" name="name" values="ㅁㅁㅁ">
+</form>
+
+<%
+String[] name = request.getParameterValues("name");
+if(name != null) {
+	out.print("선택한 멤버는 ");
+	for(int i = 0; i<name.lengthl i++) {
+		String value = name[i];
+		out.println(value);
+		out.print(i != name.length - 1 ? ", " : "입니다");
+	}
+}
+%>
+===============================================================================
+웹사이트를 준비하기 위해서 일반적으로 구성하는 3가지 서버
+- Web Server  (WAS, Tomcat)  -> 처리만
+- DB Server   (oracle) -> 내부데이터 보관 및 쿼리
+- Static Resource Server  (AWS S3 Bucket)  -> 파일지원 보관(각종 압축파일, 이미지 파일 등)
+
+-----------------------------------------
+SSH안에 딸려있는 기능 ssh,scp, sftp
+
+1)거의 대부분의 리눅스가 기본적으로 설치되어있다
+2) Secure Shell 이 적용되있다. -> 데이터가 암호화되서 전송된다(SSL)
+
+1)maven에서 
+jsch -> pom.xml
+2)web.xml
+3)<view-controller path="/" view-name="home" /> -> servlet.context
+4)root-context에서는 (day13복사)
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@221.164.9.200:50000:xe"/>
+		<property name="username" value="c##itbank"/>
+		<property name="password" value="it"/>
+	</bean>
+	
+	<!-- 기존은 c3p를 썼었다 -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig"/>
+	</bean>	
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+
+		
+	</bean>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<context:component-scan base-package="com.itbank.service"/>
+	
+	<!-- mybatis-spring은 인터페이스를 스캔 -->
+	<mybatis-spring:scan base-package="com.itbank.model"/>
+</beans>
+
+
+5)home.jsp
+<%@ taglib~>
+<c:set ~~ cpath>
+
+<h1>정적 파일 서버 연동하기(sftp)</h1>
+<hr>
+
+<form method="POST" action="${cpath}/upload" enctype="multipart/form-data">
+	<input type="file" name="uploadFile">
+	<input type="submit">
+</form>
+
+<c:if test="${not empty uploadFilePath}">   //업로드한 이미지를 바로 찍을 때 -> 우클릭해서 복사하면 db에 있는 주소가 나온다.
+	<img src="${uploadFilePath}">
+</c:if>
+6)UploadController
+
+@Controller
+public class UploadController {
+	@Autowired private UploadService us;
+	@PostMapping("/upload")
+	public String upload(SftpDTO dto) throws Exception{
+		System.out.println(dto.getUploadFile().getOriginalFilename());
+		String uploadFilePath = us.upload(dto);
+		
+		return "redirect:/";
+	}
+}
+
+7)sqldeveloper에서
+create table sftp (
+	uploadFilePath varchar2(500)   //http~
+);
+
+8)SftpDTO (model패키지에)
+public class SftpDTO {
+	private Multipart uploadFile;
+	private String uploadFilePath;
+	
+	getter,setter생성
+}
+
+9) @Service
+public class UploadService {
+	//파일전송에 필요한 정보
+	private final String serverIP = "내 리눅스ip";
+	private final int serverPort = 22;
+	private final String serverUser="root";
+	private final String serverPass="root";
+	private ChannelSftp chSftp = null;
+	
+	@Autowired private UploadDAO dao;
+	
+	public String upload(SftpDTO dto) {
+		//1) 업로드 받은 파일을 임시파일로 웹서버에 생성
+		MultipartFile file = dto.getUploadFile();
+		File dest = new File(file.getOriginalFilename());
+		file.transferTo(dest);
+		//2) 웹서버에 생성된 임시파일을 파일서버에 전송
+		Seesion sess = null;
+		Channel channel = null;
+		JSch jsch = new JSch();
+		
+		sess=jsch.getSession(serverUser, serverIp, serverPort);
+		sess.setPassword(serverPass);
+		sess=setConfig("StrictHostKeyChecking", "no");  //처음접속할때 키 체크 안한다
+		sess.connect();
+		
+		channel = sess.openChannel("sftp");
+		channel.connect();
+		
+		chSftp = (ChannelSftp) channel; //리눅스서버에 sftp형식으로 접속이 가능하다
+		
+		FileInputStream fis = new FileInputStream(dest);   //만들어진 파일을 입력받을 수 있게 stream으로 열어놓기
+		chSftp.cd("/var/www/html");   //디렉토리 이동
+		chSftp.put(fis, dest.getName()); //fis파일을 읽어내서 똑같은 이름으로 전송
+		System.out.println("sftp> transfer complete");
+		
+		fis.close();
+		chSftp.exit();
+		
+		String uploadFilePath ="";
+		uploadFilePath +="http://";
+		uploadFilePath +=serverIP;
+		uploadFilePath +=":1234";  //기본포트는 80이며 작성필요없으나, 서비스가 중복된다면 별도로 지정해야한다
+		uploadFilePath +="/" + dest.getName();
+		
+		dto.setUploadFilePath(uploadFilePath);
+		
+		//3)임시파일은 제거하고, 파일서버상의 경로를 문자열로 반환
+		int row = dao.insert(dto);
+		dest.delete();
+		return row == 1 ? dto.getUploadFilePath() : null;
+	}
+}
+
+
+10)인터페이스생성
+public interface UploadDAO {
+	@Insert("insert into sftp values (#{uploadFilePath})")
+	public int upload(SftpDTO dto);
+}
+
+-> 이제 브라우저에서 파일을올리면 리눅스 /var/www/html에 올라간다, db에는 주소가 올라간다
+
+#)브라우저에 디비에들어간 주소를 찍으면 나오게 하기위해서 아래와 같은 작업을 하자
+vi /etc/httpd/conf/httpd.conf
+LISTEN 1234
+wq!
+
+firewall-cmd --add-port=1234/tcp --permanent
+firewall-cmd --reload
+systemctl enable httpd
+systemctl restart httpd
+
+
+param.put("cond[baseDate
+
+String today = new Sim("yyyy-mm-dd").format(new Date());
+String startDate = todayy.substring(0,8)+"01";
+
+return getHttpResponse(urlString) -> 함수에전달
+return {
+'날짜' : v.baseDate.split(' ')[0],
+'1차 접종 인원' : v.total~
+}
+
+K7G5hCA%2FRqnmALDK%2F7POZXDGSgTgQFRIcOqpF8HUf9rqLn17QSaJ4Q0Ox732h%2BF%2FgxuyB3bXrdEWApNVwrOtWA%3D%3D
+
+
+====================================================================================
+#)배포
+[리눅스 서비스 설치 및 운용]
+
+	기본 포트		서비스 이름	용도
+---------------------------------------------------------------
+apache	80/tcp		httpd		정적 웹 파일 서비스         //html파일 보여주는 용도
+tomcat	8080/tcp	apache-tomcat	스프링 프로젝트 배포	  
+oracle	1521/tcp	oracle-xe-18c	Database
+ssh	22/tcp		sshd		원격접속/파일전송
+---------------------------------------------------------------
+
+root#) javac -version , java -version으로 자바가 리눅스에 깔려있는지 확인
+root#) cd /usr/local 
+root#) wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.75/bin/apache-tomcat-8.5.75.tar.gz --no-check-certificate (인증을 체크하지않겠다)
+root#) tar xf apache-tomcat-8.5.75.tar.gz
+root#) ln -s apache-tomcat-8.5.75 tomcat
+root#) vi /etc/profile.d/tomcat.sh
+#!/bin/bash
+esc -> :$r! readlink -f /bin/java  -> 엔터  -> 이거를 주석처리하기 (그냥 복사할려고쓴거임)
+그다음줄에
+JRE_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64/jre
+JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64
+CLASSPATH=$JAVA_HOME/bin
+PATH=$PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin
+
+저장 후 
+export JRE_HOME JAVA_HOME CATALINA_HOME CLASSPATH PATH
+
+source /etc/profile.d/tomcat.sh
+echo $CATALINA_HOME
+cd $CATALINA_HOME/bin
+./startup.sh
+-> 그후 윈도우 브라우저에 가상머신 IP치면 톰캣뜬다
+//포트가 열려있는지 먼저 확인
+netstat -lntup | grep 8080
+
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-forward-port=port=80:proto=tcp:toport=8080  //80번으로 들어오면 8080으로 연결해주겠다
+firewall-cmd --reload
+
+cd /usr/local/tomcat/webapps
+nautilus . &  --> 리눅스 탐색기(노틸러스)가 뜬다
+
+이클립스에서 아무프로젝트(우클릭 -> export -> war -> dest는 바탕화면에 저장 , overwrirting체크) 이거는 현재 war로 압축한다는 뜻이다 -> finish -> 파일이 만들어 진다
+윈도우에 있는 파일을 끌어서 놓으면된다. (cd /usr/local/tomcat/webapps )여기 탐색기에다가 -> 해당파일을 더블클릭하면 내용이 나와야한다
+
+드래그드롭이안되면 winscp를 설치
+호스트이름 : 리눅스ip
+
+192.168.1.100/exam11A 입력하면 나온다.
+exam11A를 ROOT로 바꾸면 알아서 된다. -> 192.168.1.100만입력해도 데이터가 뜬다
+
+vi /etc/systemd/system/tomcat.service
+[Unit]
+Description=tomcat 8.5
+After=network.target syslog.target
+
+[Service]
+Type=forking
+User=root
+Group=root
+ExecStart=/usr/local/tomcat/bin/startup.sh
+ExecStop=/usr/local/tomcat/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target
+
+systemctl daemon-reload
+systemctl restart tomcat
+
+cd /usr/local/tomcat/
+tail -f $CATALINA_HOME/logs/*      */-> 톰캣의 이벤트가 발생할때마다
+
+===================================================================
+ArrayList와 Array의 차이 -> ArrayList는 동적으로 길이가 증가
+Array는 primitive type(int,byte,char 등), Object 모두를 담을 수 있지만 ArrayList는 object만 담을수있다.
+Array는 lengh를 쓰고, ArrayList는 size()를 쓴다
+
+
+
+
