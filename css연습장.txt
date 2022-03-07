@@ -206,3 +206,17 @@ c는 fixed인데 이거는 부모요소 무시하고 그냥 브라우저 기준�
 
 		}
 =========================================================================
+1. .blur()
+
+input태그에 지정해둔 id를 blur function하고 아래와 같이 사용하면 지정해둔 id에서 focus가 해제 될 떄마다 해당 함수가 실행 됩니다.
+
+<span>
+    <input type="email" name="user_email" placeholder="E-mail" id="user_email">
+    <span class="input_error_msg"></span>
+</span>
+
+<script>
+    $("#user_email").blur(function(){
+        alert('E-mail입력창에서 focus가 해제되었습니다.')
+    });
+</script>
