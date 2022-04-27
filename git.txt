@@ -1,0 +1,183 @@
+#) 버전관리란 -> 최종1 최종2 최종3 진짜최종
+#)형상관리 -> 거의 버전관리와 같은 말이다.(형상항목간의 변경사항 추적과 통제정책 수립 및 관리)
+
+#)로컬(나)과 리모트(원격)
+#)깃과 깃허브는 다르다.
+#)깃은 로컬에서 돌아가는 버전관리프로그램이다. 깃허브는 원격에서 다른사람컴퓨터에 버전들을 저장해놓는 저장소이다.
+#)버전관리프로그램으로는 git, subversion 등이 있고,
+  저장소로는 github, gitlab, bitbucket 등이 있다.
+  
+#)git 설치
+
+1)git 설치가 되있는지 확인 -> cmd -> git --version
+2)구글 -> git ->  우측 window down -> 실행
+3)git허브에서 마스터라고 부르던 기본브랜치를 main이라고 바꾼다.(오류가 생겨서 main으로바꿈)
+git config --global init.defaultBranch main
+4)유저명,이메일 설정
+git config 뒤에 global이라는 명령어가 붙는 이유는 앞으로 이 컴퓨터에서 깃으로 관리하는 모든 프로젝트는 모두다 이 유저명으로 할거다라는 것이다
+
+>git config --global user.name "JOSEONGDONG"
+>git config --global user.email "wp203gl@naver.com"
+
+>git config --list
+
+C:\Users\LG>git config --list
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge -- %f
+filter.lfs.process=git-lfs filter-process
+filter.lfs.required=true
+http.sslbackend=openssl
+http.sslcainfo=C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt
+core.autocrlf=true
+core.fscache=true
+core.symlinks=false
+pull.rebase=false
+credential.helper=manager-core
+credential.https://dev.azure.com.usehttppath=true
+init.defaultbranch=master
+init.defaultbranch=main
+user.name=JOSEONGDONG
+user.email=wp203gl@naver.com
+
+===============================================================================
+#)현재 상태의 사진을 찍어줄 git init -> 이제 사진찍을 사람들이 모여야한다. git add (사진에 찍힐 코드파일들을 모은다) 
+-> git commit명령으로 모인 파일들을 찰칵 찍는다.
+
+#)사진사 고용은 한번만 하면된다. 즉, git init은 한번만하면된다. git add 는 사진을 찍을 때마다 해줘야한다. git commit은 매번
+#)우리가 찍은 사진을 보는 것은 git log이다.
+
+//실습
+#)gitProjects라는 폴더를 만든다. 그안에 firstProject폴더를 만든다 
+//gitbash로 firstProject 폴더에 들어간 후
+#)git init 실행 하면 .git이라는 폴더가 생긴다(숨긴파일)
+#)사진찍힐 사람들을모아보자
+#)touch test1.txt test2.txt
+#)git status -> 파일들은 있지만 중구난방으로 흩어져 있다고 보면된다(add해달라고 에러가 난다). 그래서 add를 한다.
+#)git add .  -> .은 전부를 의미 (사진 찍을 테니 .git폴더 경로의 파일들은 모여봐)
+#)이제 사진을 찍자
+#)git commit -m "initial commit"  -> 사진이름이 initial commit이다
+#)git log로 확인 
+
+
+//파일을 한개만 수정해보자
+#)vi test1.txt -> 아무내용 후 저장
+#)git add .
+#)git commit -m "modify one file"
+#)git log 
+commit 1a2f00212e1dcf3426be38ef6219f5f125032bde (HEAD -> main)
+Author: JOSEONGDONG <wp203gl@naver.com>
+Date:   Fri Dec 10 16:38:24 2021 +0900
+
+    modify one file  -> 두번째 커밋
+
+commit 9cfb45b370361849041ccc353b16422b89a9856c
+Author: JOSEONGDONG <wp203gl@naver.com>
+Date:   Fri Dec 10 16:36:00 2021 +0900
+
+    initial commit    -> 처음 커밋
+=======================================
+//최초상태로 돌아가려면??
+위에 initial commit의 해시코드를 복사
+#)git reset --hard 9cfb45b370361849041ccc353b16422b89a9856c
+#)git log
+commit 9cfb45b370361849041ccc353b16422b89a9856c (HEAD -> main)
+Author: JOSEONGDONG <wp203gl@naver.com>
+Date:   Fri Dec 10 16:36:00 2021 +0900
+
+    initial commit   -> modify one file commit이 없어졌다
+	
+//그렇다면 modify one file commit으로 갈려면?  -> github를 이용해야한다
+
+//파일 수정 후 커밋을 하고 다시 마지막으로 수정하기 전으로 가고 싶으면??
+#)vi test1.txt , vi test2.txt를 수정해주고 //git add , commit 하기 전에  아래 명령 실행
+#)git reset --hard
+
+===============================================
+#)깃허브 회원가입
+#)seongdongjo (유저네임), 이메일 -> 이게 local과 github계정 생성할 때 같아야 한다. 그래야 잔디가 심어진다(같지않으면 git config로 덮어쓰면된다)
+#)상단에 내 상태메시지 아이콘 클릭 후 seongdongjo 클릭 -> Repositories(폴더와 같은 의미) -> New 
+-> Repository name은 secondProject(아무렇게나 설정) , public  -> 생성
+
+#)로컬과 연동 (secondProject안에서 명령치기)
+git init
+git remote add origin https://github.com/seongdongjo/secondProject.git
+git remote -v 로 연결확인
+git pull origin main
+
+#) 그 후 secondProject안의 파일을 서버에 올리고 싶으면
+git push origin main -> 로그인하라고 뜬다
+#)그 후 브라우저 repo에 들어가면 test.txt가 있다. commit 2개도 볼수있다(시계표시)
+
+//또 수정 후
+git add . -> git commit -m "third commit" -> git push origin main -> commit이 3개가된다 (브라우저에서보면)
+
+//로컬에서 secondProject 폴더 삭제 후 저장소에 있는 scondProject(리포지토리)를 받을려면
+#)gitProjects 폴더에 들어간 후 -> git clone https://github.com/seongdongjo/secondProject.git
+-> gitProjects 안에 secondProject라는 폴더(우리가 브라우저에서 repo이름지을 때의 폴더)가 생긴다
+
+
+//서버(리포지토리)에서 파일이 추가(README.md)되서 클라이언트가 받을려면??
+git pull origin main (이미 clone이 되어있기 때문에 pull만 하면 된다)
+
+//일단 로컬에서 최초의 커밋으로 적용
+git reset --hard 9cfb45b370361849041ccc353b16422b89a9856c
+//그렇다면 서버에는 commit의 정보가 있을 것이고 그거를 우리는 브라우저에서 가져오자 (시계표시 클릭 후 제일 최신 commit 클릭 후 해시코드 복사)
+git reset --hard 256a8b0febff9dbb1d1392ed95057cb95c37e7ad
+
+
+=========================================================
+#)현재 우리는 secondProject폴더만 secondProject라는 리포지토리와 연동을 한 상태이다. 그래서
+#)gitProjects 폴더안에 thirdProject폴더를 생성하면 또 
+git init .  (단, clone으로 하면 init안해도됨)
+git remote add origin https://github.com/seongdongjo/thirdProject.git //해줘야된다. 단, repository를 깃허브에서 만들어야한다
+vi third.txt 
+git add .
+git commit -m "third-1 commit"
+git push origin main  -> 리포에 올라간다. 
+
+==============================================
+#)내가 원치않는 파일은 올리지 않는 방법
+thirdProject폴더에 들어가서 .gitignore.txt에 *.exe로 적고 저장하고 이름을 .gitignore로 바꾼 후
+이제 git status로 보면 exe파일은 안보인다. 즉, git add . 해도 목록에 안나온다.
+
+================================================
+#)소스트리 설지 -> google에 sourcetree install 검색 후 bitbucket은 건너뛰기
+소스트리 실행하고 .git 이 있는 폴더(프로젝트폴더를) 드래그해서 놓으면 된다.
+-> 파일을 수정하고 저장하면 스테이지에 올라가지 않은 파일이라고 하단에 뜬다. -> 스테이지에 올리고 커밋 + 메시지
+-> 좌측에 History을 클릭 후 해당 커밋을 우클릭하면 브랜치까지 초기화가 나온다.
+-> push는 상단에 원격누르기
+
+
+======================================================
+#)서버의 커밋과 로컬의 커밋이 일치해야한다.
+
+#)conflict란
+서버(깃허브)에서 test.txt라는 곳에서 1번째 줄을 수정했다.(서버에서 수정하면 알아서 commit됨)
+로컬에서 git pull하기 전에 로컬도 test.txt파일에 1번째줄을 수정하고 git add . -> git commit -> 
+git push 하면 에러난다. (서버의 변경사항이있으니 pull먼저해라고 한다)
+그래서 git pull origin main 했더니 또 에러가난다. -> conflict에러가 뜬다.
+따라서 겹쳐지는 1번째줄을 고치고 저장 후 -> git add . -> git commit -m "conflict finish"
+-> git push origin main
+
+=======================================================
+브랜치 생성
+git branch로 무슨브랜치가 있는지 확인
+
+git branch gitrini (생성됨) 
+git checkout gitrini (이동) 이시점부터의 commit과 수정은 이 브랜치안에서만 유효하다
+
+git push origin main -> main브랜치롤 github에 push하겠다
+git push origin gitrini -> gitrini 브랜치를 github에 push하겠다.
+
+merge하는 요청을 pull request라고한다. git페이지에 가보면 pull request 클릭하는게 있다
+base:main <- compare:gitrini (gitrini브랜치를 main에 넣겠다) -> create pull request클릭
+-> 제목을 상세히 적는다. 내용에는 어떤내용을 수정했는지 적는다 -> merge pull request -> confirm merge
+
+
+
+
+
+
+
+
