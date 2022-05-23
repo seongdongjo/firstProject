@@ -1248,7 +1248,7 @@ ArrayList와 Array의 차이 -> ArrayList는 동적으로 길이가 증가
 Array는 primitive type(int,byte,char 등), Object 모두를 담을 수 있지만 ArrayList는 object만 담을수있다.
 Array는 lengh를 쓰고, ArrayList는 size()를 쓴다
 
-컨트롤러어드바이스 -> 에러뜨면 여기로 다 처리
+컨트롤러어드바이스 -> 에러뜨면 여기로 다 처리  dd
 
 
 
