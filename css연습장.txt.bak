@@ -60,4 +60,146 @@
 
 </body>
 </html>
+===================================================================================================
+<form>
+		<p><input type="text" name="name" placeholder="이름" autocomplete="off"></p>  //자동완성 없애기
+		<p><input type="text" name="age" placeholder="나이"></p>
+		<p><input type="text" name="address" placeholder="주소"></p>
+		<p><input type="number" name="birth" placeholder="생년월일" min="10000" max="999999" ></p>
+		<p>
+			<select name="gender">
+				<option value="">===성별===</option>
+				<option value="남성">남성</option>
+				<option value="여성">여성</option>
+				<option value="none">선택안함</option>
+			</select>
+		</p>
+		<input type="submit">
+	</form>
+===========================================================================================================
+		<p>
+			<input type="submit" value="submit">		<%--제출 가능 --%>
+			<button>button tag</button>					<%--제출 가능 --%>
+			<input type="button" value="type button">	<%--제출 불가 --%>
+		</p>
 =============================================================================================================
+<div style="display: flex; 
+				justify-content: flex-end; 
+				width: 100%; 
+				height: 30px;">
+		${login.username } 
+		${empty login ? '' : '님, 환영합니다' }
+</div>
+==================================================================================================================
+<h1>회원가입</h1>
+	
+	<form method="POST" action="join-process.jsp">
+		<p><input name="userid" placeholder="ID" autofocus required></p>
+		<p><input name="userpw" type="password" placeholder="Password" required></p>
+		<p><input name="username" placeholder="사용자 이름" required></p>
+		<p>
+			<input type="number" min="1970" max="2021" name="year" required placeholder="연도">
+			<select name="month" required>
+				<option value="">==월==</option>
+				<%	for(int i = 1; i <= 12; i++) { %>
+				<option><%=i %></option>
+				<%	} %>
+			</select>
+			<input type="number" name="date" min="1" max="31" required>
+		</p>
+		<p>
+			<select name="gender" required>
+				<option value="">===성별===</option>
+				<option>남성</option>
+				<option>여성</option>
+				<option>선택 안함</option>
+			</select>
+		</p>
+		<p><input type="submit" value="가입"></p>
+	</form>
+==================================================================================================================
+<style>
+	.info {
+		display: flex;
+		justify-content: flex-end;
+	}
+</style>
+</head>
+<body>
+
+	<h1>로그인 예제</h1>
+	<div class="info">
+		${login.username } 					<%--EL태그는 값이 없으면 null이라고 출력하지 않는다 --%>
+		${empty login ? '' : '님, 안녕하세요' }	<%--EL태그는 삼항 연산자 사용이 가능하다 --%>
+	</div>
+	<hr>
+	<form method="POST" action="ex02-process.jsp">
+		<p><input type="text" name="userid" placeholder="ID" required autofocus></p>
+		<p><input type="password" name="userpw" placeholder="Password" required></p>
+		<p><input type="submit" value="로그인"></p>
+	</form>
+=======================================================================================================================
+ a {
+            color: inherit;
+            text-decoration: none;
+            user-select: none;  //드래그가 안되게끔(블록처리)
+        }
+===================================================================
+nav > ul {
+	display: flex;
+	padding: 0;  //ul자체에 padding이 있다.
+	list-style: none;
+}
+===========================================
+//li요소하나를 테두리처리하고 너비,폭지정
+nav > ul > li {
+	width: 100px;
+	height: 30px;
+	border: 1px solid black;
+	box-sizing: border-box;
+}
+===========================================
+//select * from board2 order by idx desc offset 0 rows  //처음부터
+	//fetch next 5 rows only; //5개
+==============================================
+static과 relative의 차이는 left,right,top,bottom을 통해 이통시킬수있느냐 차이다.
+
+
+absolute는 postion 값이 static이 아닌 가장 가까운 조상 요소를 기준으로 top, bottom, left, right 프로퍼티의 값만큼 위치를 이동시킵니다. 
+조건에 맞는 조상 요소를 찾을 수 없다면 body를 기준으로 합니다. 
+
+absolute 속성을 주게 되면 나머지 태그들이 이 속성이 있는 태그를 무시한다. 즉, 태그들의 위치가 겹칠수 있게 된다.
+
+블록 요소(block element)의 경우라도 position 프로퍼티의 값이 absolute인 경우라면 가로폭 전체 넓이를 갖지 않습니다.
+즉, 인라인 요소(inline element)와 같이 콘텐츠에 맞는 가로폭을 갖습니다.
+
+relative가 자식이고 부모가 static이면 static안에서 움직인다.
+
+a가 부모요소일때 b는 a안에서 움직인다.
+c는 fixed인데 이거는 부모요소 무시하고 그냥 브라우저 기준이다.
+		div#a {
+			width: 300px;
+			height: 300px;
+			background: #52D4FF;
+			position: relative;
+			top: 100px;
+			left: 100px;
+		}
+		div#b {
+			background: #FF63EA;
+			position: absolute;
+			top: 0px;
+			left: 100px;
+		}
+		div#c {
+
+			background: #C5FF63;
+
+			position: fixed;
+
+			top: 0px;
+
+			left: 200px;
+
+		}
+=========================================================================
