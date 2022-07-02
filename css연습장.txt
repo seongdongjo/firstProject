@@ -2377,7 +2377,15 @@ body { padding: 0;}
 4. htmltagwrap-> div로 감쌀부분을 드래그해서 " alt + w " 하면 div로 묶이게된다.
 5. bracket pair colorizer2 -> 대괄호 중괄호 소괄호를 컬러로 구분한다. -> jquery사용시 좋음
 
+
 .title -> 엔터하면 <div class="title"></div>이 만들어진다.
 #title -> <div id="title"></div>
 span.price -> <span class="price"></span>
 ======================================================================================
+#)비쥬얼 스튜디어 코드에서 css수정하면 젤위로 스크롤이 올라간다.(자동저장 때문에) Full Reload 현상 -> 불편하다
+
+설정 -> 확장 -> Live Server Config -> settings : Fill Reload 체크하면된다. -> 재시작
+
+========================================================================================
+//여기서부터
+

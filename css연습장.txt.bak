@@ -175,6 +175,9 @@ absolute 속성을 주게 되면 나머지 태그들이 이 속성이 있는 태
 
 relative가 자식이고 부모가 static이면 static안에서 움직인다.
 
+
+absolute 또는 relative가 부모이고 자식이 absolute이면 부모안에서 움직인다. 단, 태그들은 화면에 겹쳐지게 나올수있다
+
 a가 부모요소일때 b는 a안에서 움직인다.
 c는 fixed인데 이거는 부모요소 무시하고 그냥 브라우저 기준이다.
 		div#a {
@@ -203,3 +206,2186 @@ c는 fixed인데 이거는 부모요소 무시하고 그냥 브라우저 기준�
 
 		}
 =========================================================================
+1. .blur()
+
+input태그에 지정해둔 id를 blur function하고 아래와 같이 사용하면 지정해둔 id에서 focus가 해제 될 떄마다 해당 함수가 실행 됩니다.
+
+<span>
+    <input type="email" name="user_email" placeholder="E-mail" id="user_email">
+    <span class="input_error_msg"></span>
+</span>
+
+<script>
+    $("#user_email").blur(function(){
+        alert('E-mail입력창에서 focus가 해제되었습니다.')
+    });
+</script>
+============================================================================
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@seongdongjo 
+seongdongjo
+/
+Frontend
+Public
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Frontend/htmlcss/htmlcss.txt
+@seongdongjo
+seongdongjo front061901
+Latest commit 51347ae 7 days ago
+ History
+ 1 contributor
+2136 lines (1928 sloc)  66.1 KB
+
+<form>
+		<p><input type="text" name="name" placeholder="이름" autocomplete="off"></p>  //자동완성 없애기
+		<p><input type="text" name="age" placeholder="나이"></p>
+		<p><input type="text" name="address" placeholder="주소"></p>
+		<p><input type="number" name="birth" placeholder="생년월일" min="10000" max="999999" ></p>
+		<p>
+			<select name="gender">
+				<option value="">===성별===</option>
+				<option value="남성">남성</option>
+				<option value="여성">여성</option>
+				<option value="none">선택안함</option>
+			</select>
+		</p>
+		<input type="submit">
+	</form>
+===========================================================================================================
+		<p>
+			<input type="submit" value="submit">		<%--제출 가능 --%>
+			<button>button tag</button>					<%--제출 가능 --%>
+			<input type="button" value="type button">	<%--제출 불가 --%>
+		</p>
+=============================================================================================================
+<div style="display: flex; 
+				justify-content: flex-end; 
+				width: 100%; 
+				height: 30px;">
+		${login.username } 
+		${empty login ? '' : '님, 환영합니다' }
+</div>
+==================================================================================================================
+<h1>회원가입</h1>
+	
+	<form method="POST" action="join-process.jsp">
+		<p><input name="userid" placeholder="ID" autofocus required></p>
+		<p><input name="userpw" type="password" placeholder="Password" required></p>
+		<p><input name="username" placeholder="사용자 이름" required></p>
+		<p>
+			<input type="number" min="1970" max="2021" name="year" required placeholder="연도">
+			<select name="month" required>
+				<option value="">==월==</option>
+				<%	for(int i = 1; i <= 12; i++) { %>
+				<option><%=i %></option>
+				<%	} %>
+			</select>
+			<input type="number" name="date" min="1" max="31" required>
+		</p>
+		<p>
+			<select name="gender" required>
+				<option value="">===성별===</option>
+				<option>남성</option>
+				<option>여성</option>
+				<option>선택 안함</option>
+			</select>
+		</p>
+		<p><input type="submit" value="가입"></p>
+	</form>
+==================================================================================================================
+<style>
+	.info {
+		display: flex;
+		justify-content: flex-end;
+	}
+</style>
+</head>
+<body>
+
+	<h1>로그인 예제</h1>
+	<div class="info">
+		${login.username } 					<%--EL태그는 값이 없으면 null이라고 출력하지 않는다 --%>
+		${empty login ? '' : '님, 안녕하세요' }	<%--EL태그는 삼항 연산자 사용이 가능하다 --%>
+	</div>
+	<hr>
+	<form method="POST" action="ex02-process.jsp">
+		<p><input type="text" name="userid" placeholder="ID" required autofocus></p>
+		<p><input type="password" name="userpw" placeholder="Password" required></p>
+		<p><input type="submit" value="로그인"></p>
+	</form>
+=======================================================================================================================
+ a {
+            color: inherit;
+            text-decoration: none;
+            user-select: none;  //드래그가 안되게끔(블록처리)
+        }
+===================================================================
+nav > ul {
+	display: flex;
+	padding: 0;  //ul자체에 padding이 있다.
+	list-style: none;
+}
+===========================================
+//li요소하나를 테두리처리하고 너비,폭지정
+nav > ul > li {
+	width: 100px;
+	height: 30px;
+	border: 1px solid black;
+	box-sizing: border-box;
+}
+===========================================
+//select * from board2 order by idx desc offset 0 rows  //처음부터
+	//fetch next 5 rows only; //5개
+==============================================
+static과 relative의 차이는 left,right,top,bottom을 통해 이통시킬수있느냐 차이다.
+
+
+absolute는 postion 값이 static이 아닌 가장 가까운 조상 요소를 기준으로 top, bottom, left, right 프로퍼티의 값만큼 위치를 이동시킵니다. 
+조건에 맞는 조상 요소를 찾을 수 없다면 body를 기준으로 합니다. 
+
+absolute 속성을 주게 되면 나머지 태그들이 이 속성이 있는 태그를 무시한다. 즉, 태그들의 위치가 겹칠수 있게 된다.
+
+블록 요소(block element)의 경우라도 position 프로퍼티의 값이 absolute인 경우라면 가로폭 전체 넓이를 갖지 않습니다.
+즉, 인라인 요소(inline element)와 같이 콘텐츠에 맞는 가로폭을 갖습니다.
+
+relative가 자식이고 부모가 static이면 static안에서 움직인다.
+
+
+absolute 또는 relative가 부모이고 자식이 absolute이면 부모안에서 움직인다. 단, 태그들은 화면에 겹쳐지게 나올수있다
+
+a가 부모요소일때 b는 a안에서 움직인다.
+c는 fixed인데 이거는 부모요소 무시하고 그냥 브라우저 기준이다.
+		div#a {
+			width: 300px;
+			height: 300px;
+			background: #52D4FF;
+			position: relative;
+			top: 100px;
+			left: 100px;
+		}
+		div#b {
+			background: #FF63EA;
+			position: absolute;
+			top: 0px;
+			left: 100px;
+		}
+		div#c {
+
+			background: #C5FF63;
+
+			position: fixed;
+
+			top: 0px;
+
+			left: 200px;
+
+		}
+=========================================================================
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="java.util.ArrayList" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ex01.jsp - JSP의 기본 문법</title>
+<style>
+	tbody > tr > td:nth-child(1) {
+		font-weight: bold;
+		color: rgb(255, 128, 0);
+	}
+	tbody > tr:nth-child(5) > td:nth-child(1) {
+		color: rgb(128, 128, 255);
+	}
+</style>
+</head>
+<body>
+	<h1>JSP 기본 문법</h1>
+	<hr>
+
+	<table border="1" cellpadding="7" cellspacing="0">
+		<thead>
+			<tr>
+				<th>문법</th>
+				<th>이름</th>
+				<th>내용</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>&lt;%@ %></td>
+				<td>지시자 (directive)</td>
+				<td>페이지 전반에 적용되는 설정, 다른 JSP파일 포함, 다른 라이브러리 불러오기</td>
+			</tr>
+			<tr>
+				<td>&lt;%! %></td>
+				<td>선언부 (declaration)</td>
+				<td>필드를 선언하거나, 메서드를 정의하는 영역</td>
+			</tr>
+			<tr>
+				<td>&lt;% %></td>
+				<td>스크립틀릿 (scriptlet)</td>
+				<td>메인에 해당하는 자바 코드를 작성하는 함수영역, service()</td>
+			</tr>
+			<tr>
+				<td>&lt;%= %></td>
+				<td>표현식 (expression)</td>
+				<td>스크립틀릿의 out.print()를 이용해 HTML문서에 자바 값을 출력하는 구문</td>
+			</tr>
+			<tr>
+				<td>&lt;%-- --%></td>
+				<td>JSP 주석</td>
+				<td>HTML의 주석과 같은 용도이지만, 브라우저에서 확인할 수 없다</td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- HTML 주석, 브라우저에서 확인 가능 -->
+	<%-- JSP 주석, 브라우저에서 확인 불가 --%>
+
+</body>
+</html>
+=============================================================================================================
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*
+                css 선택자(selector)
+
+            1) 태그 선택자 : 지정한 이름의 모든 태그에게 속성을 적용한다
+            body {
+
+            }
+
+            2) id 선택자 : 지정한 id를 가지는 문서의 첫번째 요소(id는 문서에서 고유해야 한다)에 속성을 적용
+            #title {
+
+            }
+
+            3) class 선택자 : 지정한 클래스를 가지는 문서 내의 모든 요소에 속성을 적용한다
+            .box {
+
+            }
+
+            4) 자손 선택자 : 지정한 요소 바로 아래쪽에 속한 요소들에게 속성을 적용한다
+            ul > li {
+
+            }
+            <ul>
+                <li>
+                    <p>abcd</p>
+                </li>
+                <li>
+                    <p>abcd</p>
+                </li>
+                <li>
+                    <ol>
+                        <li>여기는 적용받지 않는다</li>
+                    </ol>
+                </li>
+            </ul>
+
+            5) 후손 선택자 : 띄워쓰기로 구분하고, 지정한 요소 아래의 모든 요소(단계가 멀어도 상관없음)에 속성 적용
+            ul li {
+
+            }
+        */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .topmenu {
+            border-top: 1px solid #dadada;
+            border-bottom: 1px solid #dadada;
+        }
+        .width1260 {
+            width: 1260px;
+            margin: 0 auto;
+        }
+        .topmenu > .width1260 {
+            justify-content: space-between;
+            display: flex;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            margin: 10px 0;
+        }
+        ul > li {
+            margin: 0 5px;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+            user-select: none;
+        }
+        a:hover {
+            color: grey;
+        }
+        .topmenu a {  /*topmenu 안에 있는 a태그들*/
+            font-size: 13px;
+        }
+        .topmenu > .width1260 > ul:nth-child(1) > li:nth-child(5), 
+        .topmenu > .width1260 > ul:nth-child(1) > li:nth-child(6) {
+            font-weight: bold;
+        }
+        .grey {
+            color: darkgrey;
+        }
+        .logo {
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            font-family: 'Cooper';
+            margin-top: 50px;
+        }
+        .subspot {
+            display: flex;
+            justify-content: space-between;
+        }
+        .subspot > .search {
+            border: 2px solid #dadada;
+            display: flex;
+            align-items: center;
+            padding: 3px 15px;
+            height: 25px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .subspot > .search > input {
+            all: unset;
+        }
+        .icons {
+            display: flex;
+        }
+        .icons > .icon {
+            border-radius: 50%;
+            text-align: center;
+            background-color: #dadada;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 5px;
+        }
+        .facebook:hover {
+            background-color:rgb(29, 116, 255) ;
+        }
+        .youtube:hover {
+            background-color: red;
+        }
+        .instagram:hover {
+            background: linear-gradient(to right, rgb(253, 167, 6), purple);
+        }
+        .nav {
+            border-top: 1px solid #dadada;
+            border-bottom: 1px solid #dadada;
+        }
+        #hamburger {
+            font-size: 36px;
+            border: 1px solid #dadada;
+            border-top: 0;
+            border-bottom: 0;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .nav > .width1260 {
+            display: flex;
+        }
+        .nav > .width1260 > ul {
+            width: 100%;
+            justify-content: space-between;
+        }
+        .nav > .width1260 > ul > li {
+            padding: 0 20px;
+        }
+        .nav > .width1260 > ul > li:nth-child(3) {
+            color: rgb(255, 0, 55);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topmenu">
+        <div class="width1260">
+            <ul>
+                <li><a href="">LOGIN</a></li>
+                <li><a href="">JOIN US</a></li>
+                <li><a href="">CART</a></li>
+                <li><a href="">ORDER</a><span class="grey"> |</span></li> 
+                <li><a href="">MY PAGE</a><span class="grey"> |</span></li> 
+                <li><a href="">BOOKMARK</a></li>
+            </ul>
+            <ul>
+                <li><a href="">공지사항</a></li>
+                <li><a href="">이벤트</a></li>
+                <li><a href="">상품문의</a></li>
+                <li><a href="">상품후기</a></li>
+                <li><a href="">출석체크 이벤트</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="spot">
+        <div class="logo"><a href="">ITBANK</a></div>
+        <div class="subspot width1260">
+            <div class="icons">
+                <div class="icon facebook">f</div>
+                <div class="icon instagram">📷</div>
+                <div class="icon youtube">▶</div>
+            </div>
+            <div class="search">
+                <input type="search">
+                <span class="btn">🔍</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav">
+        <div class="width1260">
+            <div id="hamburger">≡</div>
+            <ul>
+                <li><a href="">BEST</a></li>
+                <li><a href="">SALE 20%</a></li>
+                <li><a href="">NEW 5%</a></li>
+                <li><a href="">남성의류</a></li>
+                <li><a href="">아우터</a></li>
+                <li><a href="">탑</a></li>
+                <li><a href="">긴팔T</a></li>
+                <li><a href="">드레스</a></li>
+                <li><a href="">바텀</a></li>
+                <li><a href="">악세사리</a></li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+
+</html>
+===========================================================================================================
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        /* 창을 작게하면 그냥 잘려서 보이게끔 */
+        overflow-x: hidden;
+        width: 100%;
+    }
+    a{
+        color: inherit;
+        text-decoration: none;
+        /* 마우스를 올리면 링크가 박스전체에 걸리도록 */
+        display: block;
+    }
+    nav{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    ul{
+        list-style: none;
+        padding: 0;
+        display: flex;
+        align-items: flex-end;
+        width: 970px;
+        height: 40px;
+        background-color: #00b2cf;
+    }
+    nav > ul > li {
+        border: 1px solid black;
+        width: 110px;
+        height: 37px;
+        box-sizing: border-box;
+        text-align: center;
+        line-height: 37px;
+        background-color: #061c25;
+    }
+
+    nav > ul > li:hover {
+        border-bottom: 3px solid #00b2cf;
+    }
+
+    nav > ul > li:hover > a {
+        /* 마우스가 올라가면 색깔 */
+        color: #00b2cf;
+    }
+
+    nav > ul > li > a{
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    /* 여기서부터는 서브메뉴 */
+    ul.submenu {
+        border-color: 1px solid #2b9cb9;
+        background-color: #123643;
+        list-style: none;
+        padding: 10px 5px;
+        padding-top: 0;
+        margin: 0;
+
+        /* 주변요소에 상관없이 독자적인 위치를 가지게한다 */
+        /* 상위요소가 너비의 제한을 가져도 독자적인 크기를 가지게된다 */
+        position: absolute;
+        /* 평소에는 보이지 않는다 공간차지도 안한다*/
+        /* nav> ul > li:hover > .submenu위에 li에 마우스를 올리면 보인다 */
+        display: none; 
+        /*visibility: hideen; 보이지만 않을 뿐 자리차지는 한다 */
+    }
+
+    nav > ul > li:hover > .submenu {
+        display: block;
+    }
+
+    .submenu > li {
+        height: 26px;
+        padding: 0 5px;
+        text-align: left;
+    }
+
+    .submenu a {
+        height: inherit;
+        color: white;
+        text-decoration: none;
+        font-size: 12px;
+    }
+    /* 마우스 올리면 */
+    .submenu a:hover {
+        text-decoration: underline;
+    }
+
+</style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="">홈</a></li>
+            <li>
+                <a href="">기록실</a>
+                <ul class="submenu">
+                    <li><a href="">LOL 기록실 - 경기기록</a></li>
+                    <li><a href="">LOL 기록실 - 선수기록</a></li>
+                    <li><a href="">LOL 기록실 - 팀 통산</a></li>
+                    <li><a href="">LOL 기록실 - 선수 통산</a></li>
+                    <li><a href="">LOL 기록실 - 챔피언 픽/벤</a></li>
+                    <li><a href="">LOL 기록실 - 래더랭킹</a></li>
+                    <li><a href="">LOL 기록실 - LOL프로팀 정보</a></li>
+                </ul>
+            </li>
+            <li><a href="">LCK 인벤</a></li>
+            <li><a href="">챔피언</a></li>
+            <li><a href="">카운터픽</a></li>
+            <li><a href="">공략</a></li>
+            <li><a href="">스킨갤러리</a></li>
+            <li><a href="">방송/영상</a></li>
+            <li><a href="">LoL DB</a></li>
+        </ul>
+    </nav>
+
+    <h2 style="visibility: visible;">hello</h2>
+    <h2 style="visibility: hidden;">hello2</h2>
+    <h2 style="visibility: visible;">hello3</h2>
+
+    <h2 style="display: block;">helloword</h2>
+    <h2 style="display: block;">helloword2</h2>
+    <h2 style="display: block;">helloword3</h2>
+</body>
+</html>
+=========================================================================================
+뷰포트란? 웹 페이지에서 사용자의 보이는 영역(visible area)를 말합니다
+
+같은 페이지라 하더라도 모바일과 태블릿은 화면 크기가 다르기 때문에 사용자가 볼 수 있는 범위가 다르니까요.
+즉, 이 태그는 뷰포트를 지정해주는 역할을 합니다.
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+width는 뷰포트의 가로 크기
+device-width는 기기의 스크린 너비에 맞추라는 뜻이다.
+initial-scale : 페이지 처음 접속 시 보여질 배율
+
+뷰포트를 지정하지 않으면 width는 기본값이 980이다. width:100%로 하면 그냥 980을 갖게되는 것이다.
+따라서 모바일은 이 980px짜리 페이지를 어떻게든 사용자에게 보여주려고 배율을 줄이게 됩니다. -> 즉 이상하게 보인다.
+
+이렇게 <meta name="viewport" content="width=device-width,initial-scale=1"> 지정하게 되면
+width: 100%가 iPhone5에선 320px, iPad에선 768px이 된다.
+
+meta 태그에는 여러 속성이 있는데
+1. user-scalable : 사용자의 축소/확대 허용 여부. 초기값은 yes
+2. minimum-scale : 뷰포트의 최소 배율값(0~10) 기본값 0.25
+3. maximum-scale : 뷰포트의 최대 배율값(0~10) 기본값 1.6
+네이버같은경우는 minimum-scale, maximum-scale을 1.0으로 지정해서 고정된 UI를 항시보여줄수있다.
+
+#)미디어 쿼리
+.title {
+  font-size: 40px;
+}
+ 
+@media (max-width: 600px) {
+  .title {
+    font-size: 20px;
+  }
+}
+타이틀의 텍스트 크기를 40px로 하되, 600px보다 작은 화면에서는 20px로 줄인다는 말이다.
+
+=============================================================
+모바일 퍼스트 : min  -> 모바일에 대한 스타일이 우선 적용되도록, 낮은 순서대로 작성해야한다.
+데스크탑 퍼스트 : max
+
+.title { font-size: 12px; }
+ 
+@media (min-width: 640px) {
+  .title { font-size: 14px; }
+}
+
+@media (min-width: 768px) {
+  .title { font-size: 16px; }
+}
+
+@media (min-width: 1024px) {
+  .title { font-size: 18px; }
+}
+
+위와 같이 작성한 경우, iPhoneX 사이즈(375px)의 기기에서는 폰트 사이즈가 어떻게 될까요?
+어떠한 미디어 쿼리 구문도 만족하지 못하므로 12px이 적용됩니다.
+한편, 800px 너비의 뷰포트에서 본다면요?
+우선 12px이 적용되지만, 최소 너비 640이란 조건을 만족하므로 스타일을 덮어써서 14px이 됩니다.
+또, 최소 너비 768이라는 조건도 만족하므로 스타일을 다시 덮어써서 16px이 됩니다.
+하지만 최소 너비 1024는 만족하지 못한 상태이므로 16px이 그대로 유지돼요.
+
+----------------
+#)데스크탑 퍼스트
+.title { font-size: 18px; }
+ 
+@media (max-width: 1023px) {
+  .title { font-size: 16px; }
+}
+ 
+@media (max-width: 767px) {
+  .title { font-size: 14px; }
+}
+ 
+@media (max-width: 639px) {
+  .title { font-size: 12px; }
+}
+==================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+        #jb-container {
+          width: 940px;
+          margin: 10px auto;
+          padding: 20px;
+          border: 1px solid #bcbcbc;
+        }
+        #jb-header {
+          padding: 20px;
+          margin-bottom: 20px;
+          border: 1px solid #bcbcbc;
+        }
+        #jb-content {
+          width: 580px;
+          padding: 20px;
+          margin-bottom: 20px;
+          float: left;
+          border: 1px solid #bcbcbc;
+        }
+        #jb-sidebar {
+          width: 260px;
+          padding: 20px;
+          margin-bottom: 20px;
+          float: right;
+          border: 1px solid #bcbcbc;
+        }
+        #jb-footer {
+          clear: both;
+          padding: 20px;
+          border: 1px solid #bcbcbc;
+        }
+
+        @media ( max-width: 480px ) {
+          #jb-container {
+            width: auto;
+          }
+          #jb-content {
+            float: none;
+            width: auto;
+          }
+          #jb-sidebar {
+            float: none;
+            width: auto;
+          }
+        }
+        </style>
+</head>
+<body>
+   <div id="jb-container">
+      <div id="jb-header">
+        <h1>Responsive Layout</h1>
+      </div>
+      <div id="jb-content">
+        <h2>Content</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec mollis nulla. Phasellus lacinia tempus mauris eu laoreet. Proin gravida velit dictum dui consequat malesuada. Aenean et nibh eu purus scelerisque aliquet nec non justo. Aliquam vitae aliquet ipsum. Etiam condimentum varius purus ut ultricies. Mauris id odio pretium, sollicitudin sapien eget, adipiscing risus.</p>
+      </div>
+      <div id="jb-sidebar">
+        <h2>Sidebar</h2>
+        <ul>
+          <li>Lorem</li>
+          <li>Ipsum</li>
+          <li>Dolor</li>
+        </ul>
+      </div>
+      <div id="jb-footer">
+        <p>Copyright</p>
+      </div>
+    </div>
+</body>
+</html>
+================================================================
+#)화면의 너비가 최소200px, 최대 1000px일 때, 폰트사이즈 12px로 스타일을 주겠다.
+@media (min-width:200px) and (max-width:1000px) { font-size: 12px; }
+=================================================================
+  /* 테블릿 사이즈 540 ~ 720 */
+      /* min-width: 540px 최소수치 -> 540px 이하로는 css 적용하지 않겠다 */
+      /* max-width: 720px 최대수치 -> 720px 이상으로는 css 적용하지 않겠다 */
+      @media screen and (min-width: 540px) and (max-width: 720px) {
+        #wrap {
+          width: 100%;
+        }
+        header h1 {
+          background-color: crimson;
+        }
+==================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+    /* Header */
+    header {
+      color: white;
+      background: cadetblue;
+      padding: 20px 0;
+    }
+    
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+    
+    nav a {
+      display: block;
+      text-align: center;
+      margin: 5px 0;
+      padding: 5px 0;
+      text-decoration: none;
+      font-weight: bold;
+      line-height: 1.3;
+      color: white;
+      background: teal;
+    }
+    
+    nav a:hover {
+      background: yellowgreen;
+    }
+    
+    /* Main */
+    main {
+      padding: 20px 0;
+    }
+    
+    article {
+      padding-bottom: 10px;
+    }
+    
+    article h1 {
+      padding-bottom: 10px;
+    }
+    
+    article p {
+      line-height: 1.6;
+    }
+    
+    aside {
+      border-top: 15px solid teal;
+      color: white;
+      background: cadetblue;
+      padding: 10px;
+    }
+    
+    /* Footer */
+    footer {
+      color: white;
+      background: teal;
+      padding: 20px 0;
+      font-weight: bold;
+    }
+    
+    @media only screen and (min-width: 480px) { /*480이상일때*/
+      nav a {
+        float: left;
+        width: 30%;
+        margin-right: 5%;
+      }
+      
+      nav li:last-child a {
+        margin-right: 0;
+      }
+    }
+    
+    @media only screen and (min-width: 768px) { /*768이상일때*/
+      header h2 {
+        float: left;
+        font-size: 2rem;
+      }
+      
+      nav {
+        float: right;
+        width: 60%;
+      }
+      
+      main article {
+        float: left;
+        width: 70%;
+      }
+      
+      main aside {
+        float: right;
+        width: 30%;
+      }
+    }
+    
+    /* Common */ .clearfix class 이후에
+    .clearfix:after {
+      clear: both;
+      content: " ";
+      display: table;
+    }
+    
+    .wrapper {
+      max-width: 1024px;
+      width: 90%;
+      margin: 0 auto;
+    }
+    
+    h1, h2, h3, p {
+      margin: 0;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+</style>
+</head>
+<body>
+    <header>
+        <div class="wrapper clearfix">
+          <h2>사이트명</h2>
+          <nav>
+            <ul>
+              <li><a href="#">메뉴 1</a></li>
+              <li><a href="#">메뉴 2</a></li>
+              <li><a href="#">메뉴 3</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+      
+      <main>
+        <div class="wrapper clearfix">
+          <article>
+            <h1>제목</h1>
+            <p>가나다라바마사아자타카타파하</p>
+            <p>가나다라바마사아자타카타파하</p>
+            <p>가나다라바마사아자타카타파하</p>
+            <p>가나다라바마사아자타카타파하</p>
+            <p>가나다라바마사아자타카타파하</p>
+          </article>
+          <aside>
+            <h3>사이드바</h3>
+            <ul>
+              <li>태그 1</li>
+              <li>태그 2</li>
+            </ul>
+          </aside>
+        </div>
+      </main>
+      
+      <footer>
+        <div class="wrapper">
+          <p>Copyright &copy 2011-2017 회사명</p>
+        </div>
+      </footer>
+</body>
+</html>
+====================================================
+//grid 설정
+
+.container {
+	display: grid;
+	grid-template-columns: 150px 150px 150px;
+	grid-template-rows: 150px 150px;
+}
+---> 1 2 3
+     4 5 6   이런식으로 만들어진다. column은 150px크기(열의너비) row는 150px
+	 
+====================================================
+.container {
+	display: grid;
+	grid-template-columns: 150px 150px;
+	grid-template-rows: 300px 100px;
+}
+=================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+        .item {
+            font-size: 20px;
+        }
+        .container {
+            display: grid; /*이걸 뺴면 span으로 내가 설정했으니 inline으로 span크기만큼 작게 옆으로 배치가 된다*/
+                            /*이걸 넣으면 block형식으로 쌓이면서 전체 가로를 차지하면서 쌓인다.*/
+        }
+        .item1 {
+            background-color: aqua;
+        }
+        .item2 {
+            background-color: cadetblue;
+        }
+        .item3 {
+            background-color: bisque;
+        }
+        .item4 {
+            background-color: coral;
+        }
+        .item5 {
+            background-color: darkorange;
+        }
+        .item6 {
+            background-color: dodgerblue;
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+       <span class="item item1">1</span>
+       <span class="item item2">2</span>
+       <span class="item item3">3</span>
+       <span class="item item4">4</span>
+       <span class="item item5">5</span>
+       <span class="item item6">6</span>
+   </div>
+</body>
+</html>
+=======================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+        .item {
+            font-size: 20px;
+        }
+        .container {
+            display: grid; 
+            grid-template-columns: 150px 150px 150px;
+            grid-template-rows: 150px 150px;
+        }
+		//1 2 3 
+		//4 5 6 으로 각각 150px로 생긴다.
+        .item1 {
+            background-color: aqua;
+        }
+        .item2 {
+            background-color: cadetblue;
+        }
+        .item3 {
+            background-color: bisque;
+        }
+        .item4 {
+            background-color: coral;
+        }
+        .item5 {
+            background-color: darkorange;
+        }
+        .item6 {
+            background-color: dodgerblue;
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+       <span class="item item1">1</span>
+       <span class="item item2">2</span>
+       <span class="item item3">3</span>
+       <span class="item item4">4</span>
+       <span class="item item5">5</span>
+       <span class="item item6">6</span>
+   </div>
+</body>
+</html>
+============================================================================
+grid-template-column: 100px 100px 100px 100px 100px 100px 100px 100px 100px; //귀찮다....
+//repeat을 이용한 생성
+.container {
+	width: 900px;
+	display: grid;
+	grid-template-columns: repeat(9, 100px);
+}
+
+===========================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+        .item {
+            font-size: 20px;
+        }
+        .container {
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; //fr은 비율이다. container크기가 안주어지면 전체를 기준으로한다. 
+        }
+        .item1 {
+            background-color: aqua;
+        }
+        .item2 {
+            background-color: cadetblue;
+        }
+        .item3 {
+            background-color: bisque;
+        }
+        .item4 {
+            background-color: coral;
+        }
+        .item5 {
+            background-color: darkorange;
+        }
+        .item6 {
+            background-color: dodgerblue;
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+       <span class="item item1">1</span>
+       <span class="item item2">2</span>
+       <span class="item item3">3</span>
+       <span class="item item4">4</span>
+       <span class="item item5">5</span>
+       <span class="item item6">6</span>
+   </div>
+</body>
+</html>
+========================================================================
+//grid-line은 column보다 1이 더많다. 
+.item1 {   3 * 3일때
+    grid-column-start: 1;     
+    grid-column-end: 3;  //가로로 2칸 병합 
+}
+
+.item3 {
+    grid-row-start: 2; //2번째줄부터 세로로 2칸 병합
+    grid-row-end: 4;
+}
+
+.item4 { 
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+=====================================================================
+#)팝업창 띄우기
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+        
+    </style>
+    <script>
+        function showPopup() { //a는 별칭이다.
+            window.open("popup.html","a","width=400,height=300,left=100,top=50");
+        }     
+    </script>
+</head>
+<body>
+   <input type="button" value="팝업창 호출" onclick="showPopup();"/>
+
+</body>
+</html>
+-------------
+#)실제팝업창
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>POPUP!!</h1>
+</body>
+</html>
+===================================================================
+#)index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+        
+    </style>
+    <script>
+        function showPopup() {
+            window.open("popup.html","a","width=400,height=300,left=100,top=50");
+        }     
+    </script>
+</head>
+<body>
+   <input type="button" value="팝업창 호출" onclick="showPopup();"/>
+
+</body>
+</html>
+------------------
+#)popup.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function moveClose() {
+        opener.location.href="회원가입.html";
+        self.close(); //회원가입.html로 이동 후 팝업창 닫기
+    }
+</script>
+<body>
+    <h1>POPUP!!</h1>
+    
+    <input type="button" value="이동 후 닫기" onclick="moveClose();"/>
+
+</body>
+</html>
+----------------
+#)회원가입.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    "회원가입 페이지"
+</body>
+</html>
+===================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
+    <style>
+        
+    </style>
+    <script>
+        function showPopup() {
+           
+           let width=500;
+           let height=500;
+
+           let left = (window.screen.width / 2) - (width/2); 
+           let top = (window.screen.height / 4);
+
+           let windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizeable=yes, titlebar=yes';
+
+           //연결하고 싶은 url
+           const url = "https://seeminglyjs.tistory.com";
+
+           //팝업창열자 지정한 속성으로
+           window.open(url,"hello popup", windowStatus);
+        }     
+    </script>
+</head>
+<body>
+  <div>
+      <a href="javascript:showPopup()">링크</a>
+  </div>
+
+</body>
+</html>
+=================================================================
+#)쿠키생김새
+쿠키는 이름=값 쌍으로 저장, (세미콜론); 으로 구분된다.
+document.cookie = "username=Hz Sinbi; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/";
+
+#)쿠키읽기
+let x = document.cookie;
+->cookie1 = value; cookie2=value; cookie3=value; 이런식으로 하나의 문자열로 모든 쿠키를 반환을 한다.
+
+#)쿠키변경은 덮어쓰면된다. 
+#)path는 예를들어 path=/admin 옵션을 사용하여 설정한 쿠키는 /admin과 /admin/something에선 볼 수 있지만, /home 이나 /adminpage에선 볼 수 없습니다.
+특별한 경우가 아니라면, path 옵션을 path=/같이 루트로 설정해 웹사이트의 모든 페이지에서 쿠키에 접근할 수 있도록 합시다.
+
+document.cookie = "username=Hz client; expires=Thu, 19 Dec 2019 12:00:00 UTC; path=/"; 
+document.cookie = "user=John" //이름이 user인 쿠키의 값만 갱신된다.(다른것은 덮어쓰지않는다)
+
+// 특수 값(공백)은 인코딩 처리해 줘야 합니다.
+let name = "my name";
+let value = "John Smith"
+
+// 인코딩 처리를 해, 쿠키를 my%20name=John%20Smith 로 변경하였습니다.
+document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+
+alert(document.cookie); // ...; my%20name=John%20Smith
+
+//expires(유효일자), max-age(만료기간) 옵션이 지정되어있지 않으면, 브라우저가 닫힐 때 쿠키도 함께 삭제된다. 이런쿠키를 세션쿠키라고부른다.
+//expires나 max-age옵션을 설정하면 브라우저를 닫아도 쿸가 삭제되지 않는다.
+
+//쿠키의 유효일자는 반드시 GMT포맷이나 UTC로 설정해야한다.
+
+// 지금으로부터 하루 후
+let date = new Date(Date.now() + 86400e3);
+date = date.toUTCString();
+document.cookie = "user=John; expires=" + date;
+
+// 1시간 뒤에 쿠키가 삭제됩니다.
+document.cookie = "user=John; max-age=3600";
+
+// 만료 기간을 0으로 지정하여 쿠키를 바로 삭제함
+document.cookie = "user=John; max-age=0";
+
+
+//쿠키값 "Ck_01"에 on값을 저장합니다. 1은 Day 하루 동안을 의미합니다.
+setCookie("Ck_01","on","1") //변수, 변수값, 저장기간
+
+var checkEvent = getCookie("Ck_01");
+
+//checkEvent 라는 변수를 만들어 브라우져 쿠키 "Ck_01" 값을 가져 옵니다.
+
+
+if(checkEvent == "on") {
+
+ //쿠키값에 on이 저장되었을 경우 
+
+} else {
+
+ //쿠키값이 없을 경우
+
+}
+
+//쿠키 세팅
+function setCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000)); //하루
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+//또는
+var setCookie = function(name, value, exp) {
+  var date = new Date();
+  date.setTime(date.getTime() + exp*24*60*60*1000);
+  document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+};
+
+setCookie(name, value, 1)
+
+//쿠키삭제하기(name에 빈값을 넣어서 삭제한다)
+var deleteCookie = function(name) {
+document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+}
+
+deleteCookie(name)
+===================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+
+</script>
+<body>
+    <h1>JavaScript With Crocus</h1>
+ 
+    <p>아래 버튼을 눌러보세요!</p>
+    <button type="button" onclick="display()"> << 현재 쿠키 보기 >> </button>
+    <p></p>
+    <button type="button" onclick="create1()"> << 쿠키1 생성 클릭 >> </button>
+    <button type="button" onclick="create2()"> << 쿠키2 생성 클릭 >> </button>
+    <p></p>
+    <button type="button" onclick="delete1()"> << 쿠키1 삭제 클릭 >> </button>
+    <button type="button" onclick="delete2()"> << 쿠키2 삭제 클릭 >> </button>
+    <p></p>
+ 
+    <script>
+        function display() {
+            var txt = "";
+            var ans = "";
+            if (document.cookie != ""){
+                txt = document.cookie.split(";"); // ';'를 기준으로 split
+                console.log(txt) //   cookie2=KKW, cookie1=Crocus 이렇게 출력된다.
+                for(i in txt) // txt에 있는 쿠키들을 조사
+                {
+                    console.log(txt[i] + "여기가")
+                    // name과 value 모두 있는 쿠키만 ans에 넣어준다.
+                    console.log(txt[i][0] + "요기요") // cookie1=Crocus 여기서 c를 출력한다.  [0]번째니까 처음걸 출력
+                    if (txt[i][txt[i].length - 1] != "=") { 
+                        ans += txt[i];
+                    }
+                }
+            }
+            // 쿠키가 존재하지 않았을 경우
+            if (ans == "")
+                alert("쿠키가 없습니다.");
+            // 쿠키가 존재할 경우 alert(ans); 
+            else
+                alert(ans);
+        }
+        
+        function create1() {
+            document.cookie = "cookie1 = Crocus; expires = Wed, 18 Dec 2023 12:00:00 GMT";
+            display();
+        }
+        function create2() {
+            document.cookie = "cookie2 = KKW; expires = Wed, 18 Dec 2023 12:00:00 GMT";
+            display();
+        }
+        function delete1() {
+            document.cookie = "cookie1 = ; expires = Wed; 01 Jan 1970";
+            display();
+        }
+        function delete2() {
+            document.cookie = "cookie2 = ; expires = Wed; 01 Jan 1970";
+            display();
+        }
+ 
+     </script>
+
+</body>
+</html>
+===========================================================================
+#)메인 popupTest.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    window.onload = pageLoad //아래 함수 실행
+    function pageLoad() {
+        let notShowPop = getCookieValue(); //아래함수실행 getCookieValue()
+        console.log(notShowPop) //false로 나온다. 
+        if(notShowPop != 'true') {  //처음에 실행시키면 notShowPop이 false니까 팝업창이뜨고 체크박스체크하면 notShowPop이 true가 되면서 팝업이 안뜬다.
+            window.open("popUp1.html","pop",
+				"width=400,height=500,history=no,menubar=no,status=no");
+        }
+    }
+
+    function getCookieValue() {
+        let result = 'false'
+        let element;
+        let value;
+        let cookie;
+        if(document.cookie != '') {
+            cookie = document.cookie.split(";");
+            for(i=0; i<cookie.length; i++) {
+                element = cookie[i].split("=");
+                //console.log(element) // ['test', 'testvalue']  [' test1', 'test1value'] 이렇게 뜬다. 즉, element[0] -> name, element[1] -> value가 된다.
+                value = element[0];
+                //console.log(value) // test test1 이렇게뜬다.(name이 뜬다.)
+                value = value.replace(/^\s*/,''); //공백제거
+                if(value=='notShowPop') {
+                    result = element[1]
+                }
+            }
+        }
+        return result;
+    }
+    function deleteCookie() { //false로 바꾸면 다시 팝업창이 뜬다.
+        document.cookie = 'notShowPop=false;path=/;expires=-1';
+    }
+
+</script>
+<body>
+    <form>
+        <input type="button" value="쿠키삭제" onclick="deleteCookie()"/>
+    </form>
+</body>
+</html>
+---------------------------
+#)popUp1.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    function setPopUpStart(obj) {
+        //체크박스 체크시 -> 쿠키에 값넣고, 팝업창닫기
+        if(obj.checked == true) {
+            let expireDate = new Date();
+            expireDate.setMonth(expireDate.getMonth()+1)
+            //쿠키에 값넣기
+            document.cookie = "notShowPop=true;path=/;expires=" + expireDate.toGMTString();
+            window.close;
+        }
+    }
+</script>
+<body>
+    <form>
+        <input type="checkbox" onClick="setPopUpStart(this)"/>한달간 팝업창 띄우지 않기
+    </form>
+</body>
+</html>
+================================================================
+//popup.jsp(팝업창 화면)
+ <div>
+   		<!-- <img src="/images/2020_1.jpg" alt="코로나19 생활 속 거리두기" usemap="#map01"> --> <!-- 생활속거리두기 -->
+   		<a href="https://www.koswec.or.kr/cop/cnt/selectContentsPage.do?cntId=training_intro_new" target="_bank">
+   			<img src="/images/20220418_popup.jpg" alt="2022년도 장해선원 재활 직업 훈련 지원 안내" usemap="#map01" style="width:700px;"> <!-- 2022년도 장해선원 재활 직업 훈련 지원 -->
+        </a>
+   		
+<!--    		<map name="map01" id="map01"> -->
+<!--    			<area shape="rect" coords="270,682,596,722" href="http://koswec.wiselection.com/?P_IDX=374" target="_blank" alt=""> -->
+<!--    		</map> -->
+	    
+	    <div style="text-align: center;margin-bottom: 2px; bottom:0px;position: absolute; right:10px;" >
+	                  하루동안 열지 않기 <input type="checkbox" value="1" onclick="closeWin('popupCheck')"> //여기에 체크를하면 쿠키에 popupCheck=done 저장					  
+	        </div>
+	</div>
+-----------------------
+//popup.js (obj)에는 popupCheck가 들어간다. 그래서 setCookie진행시에 name은 popupCheck가 들어간다. value에는 done
+function closeWin(obj)
+{
+    setCookie(obj, "done" , 1);
+    close();
+}
+ 
+function setCookie( name, value, expiredays )
+{
+    var todayDate = new Date();
+    todayDate.setDate( todayDate.getDate() + expiredays );
+    document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + todayDate.toGMTString() + ";";
+}
+====================================================
+function saveid(form) {
+    var expdate = new Date();
+    // 기본적으로 30일동안 기억하게 함. 일수를 조절하려면 * 30에서 숫자를 조절하면 됨
+    if (form.checkId.checked)
+        expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30); // 30일
+    else
+        expdate.setTime(expdate.getTime() - 1); // 쿠키 삭제조건
+    setCookie("saveid", form.id.value, expdate);
+}
+---------------
+function setCookie (name, value, expires) {
+    document.cookie = name + "=" + escape (value) + "; path=/; expires=" + expires.toGMTString();
+}
+=========================================================
+
+function actionLogin() {
+
+    if (document.loginForm.id.value =="") {
+        alert("아이디를 입력하세요");
+    } else if (document.loginForm.password.value =="") {
+        alert("비밀번호를 입력하세요");
+    } else {
+        document.loginForm.action="<c:url value='/uat/uia/actionLogin.do'/>";
+        //document.loginForm.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
+        //document.loginForm.action="<c:url value='/j_spring_security_check'/>";
+        document.loginForm.submit();
+    }
+}
+=======================================================
+#)flex는 기본값이 row로 정렬이된다. flex-direction: row
+#)block으로 쌓을려면 flex-direction: column
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display:flex; flex-direction: column;">
+        <div style="border: 1px solid black;">여기는</div>
+        <div style="border: 1px solid black;">colum입니다.</div>
+    </div>
+
+    <div style="display:flex;">
+        <div style="border: 1px solid black;">여기는</div>
+        <div style="border: 1px solid black;">row입니다.</div>
+    </div>
+</body>
+</html>
+===========================================================
+#)target(기본값은 self)
+<a href="<c:url value='/sym/mnu/mpm/EgovMainMenuHome.do' />" target="_top">  
+
+1. target = _blank
+-> 새 윈도우창을 열어서, 웹페이지를 연다.(기존창은 유지)
+
+2. target = _self
+-> 현재 윈도우창에 그대로, 링크된 웹페이지를 연다(기존페이지는 덮어씌워진다)
+
+================================================================
+#)document.menuListForm.tmp_menuNm[j].value 이 부분 보기
+<form name="menuListForm" action ="<c:url value='/sym/mnu/mpm/EgovMenuListSelect.do' />" method="post">
+<DIV id="main" style="display:">
+
+<table width="181" cellpadding="8" class="table-search" border="1">
+  <tr>
+    <td width="181" class="title_left" >
+        <div style="width:0px; height:0px;">
+		<c:forEach var="result" items="${list_menulist}" varStatus="status" >
+		<input type="hidden" name="tmp_menuNm" value="${result.menuNo}|${result.upperMenuId}|${result.menuNm}|${result.relateImagePath}|${result.relateImageNm}|${pageContext.request.contextPath}/${result.chkURL}|"/>
+		</c:forEach>
+		</div>
+		<div class="tree" style="overflow: auto; position: absolute; z-index: 5; padding: 0pt 0pt 0pt 49px; width: 214px; height: 512px;">
+		<script language="javascript">
+			var Tree = new Array;
+			for (var j = 0; j < document.menuListForm.tmp_menuNm.length; j++) {
+				Tree[j] = document.menuListForm.tmp_menuNm[j].value;
+			}
+			createTree(Tree, true, '<c:out value="${resultVO.tempInt}"/>');
+		</script>
+		</div>
+   </td>
+ </tr>
+</table>
+</DIV>
+</form>
+=================================================================
+#)보통 footer는 fixed로 하지않고 하단에 위치만 시켜놓고 스크롤로 내린다. bottom : 0으로 하단에만 놓자, 그래도 footer가 뜨는 경우가 있는데
+그때는 footer위에 큰 컨테이너 영역을 min-height로 조절해주면된다.
+
+//홈으로
+<script>
+		const cpath = '${ cpath }'
+		alert('${ msg }')
+		location.href=  '${ url }'
+		//location.href=  cpath + '/${ url }'
+</script>
+
+
+if(row == 1) {
+			session.invalidate();
+			mav.setViewName("alert");
+			mav.addObject("msg", "회원 탈퇴 성공");
+			mav.addObject("url", "/burger2-4"); //이부분
+			
+}
+=================================================================
+#)특수문자입력할수있도록
+
+$('#userpass').blur(passchk1)    //passchk1 함수 실행
+
+function passchk1() {
+	var pw = $("#userpass").val();
+	var num = pw.search(/[0-9]/g);
+	var eng = pw.search(/[a-z]/ig);
+	var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+	 
+	if (pw.length < 8) {
+		$('.point2').text('')
+		$('.point2').text('비밀번호가 8자리보다 작습니다')
+		$('.point2').css('color', 'red')
+		$('#userpass').focus()
+	}
+	else if (num < 0 || eng < 0 || spe < 0) {
+		$('.point2').text('')
+		$('.point2').text('영문,숫자,특수문자를 혼합하여 사용해주세요')
+		$('.point2').css('color', 'red')
+		$('#userpass').focus()
+	}
+	else{
+		$('.point2').text('') //다 입력되면 '비밀번호는 총 8자에서 15자까지 입력가능' 안내구문 지우기 
+	}
+}
+===========================================================================
+document.getElementById("addressInput").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //주소발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                addressinput.value = data.address // 주소 넣기
+                
+                //detailAddress.value = data.address
+                detailResult.innerText = document.getElementById("addressInput").value
+                
+     
+                detailAddress.focus() //상세입력 포커싱
+            }
+        }).open()
+    });
+    
+    $('#detailAddress').blur(function(){ //detailAddressInput의 포커스가 해제가 되면
+    	console.log('안됨??')
+    		detailresult.value +=  (' '+$('#addressInput').val() + ' '+ $('#detailAddress').val())
+    })
+==============================================================================
+//이메일 체크
+function emailchk() {
+	let regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+	if($('#useremail').val() == ''){
+		$('.updateemail').css('display','block')
+		$('#useremail').focus()
+		$('#useremailauth').text('이메일을 입력해주세요.')
+		return
+	}
+	else if(userEmailValue == $('#useremail').val()) {
+		$('#updateInputEmail').css('display','none')
+	}
+	else if ((regEmail.test($('#useremail').value) == false)) {
+	          $('#useremail').value = ''
+	          $('#useremail').focus()
+	          $('#useremailauth').text('올바르지 않은 이메일 형식입니다.')
+	          return
+	      }
+	else {
+		 $('#useremailauth').text('')
+	}
+}
+===========================================================================
+#)다음주소api(이런식으로 마지막은 span을 써서 하는게 낫다) 나는 마지막에 input을 써서 input의 value에 더하다 보니 계속 주소가 짤리는 현상발생
+<form class="join-address-form" action="${ cpath }/join/step2">
+            <p>지역명</p>
+            <input id="addressInput" type="text" name="addressName" placeholder="지번, 도로명, 건물명으로 입력해주세요" required>
+            <hr>
+            <p>상세주소</p>
+            <input id="detailAddressInput" type="text" name="adressDetail" placeholder="나머지 주소를 입력해주세요" required>
+            <hr>
+            <p>최종 배달주소</p>
+            <div id="address-result">
+            	<span id="resultAddress"></span>
+            </div>
+            <hr>
+            <input id="addressSubmit" type="submit" value="다음">
+        </form>
+
+ new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("addressInput").value = data.address; // 주소 넣기
+                
+                resultAddress.innerText = document.getElementById("addressInput").value //주소를 최종주소에 넣고 아래 상세주소를 입력받을수 있도록 커서
+                
+                document.getElementById("detailAddressInput").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+    
+    	
+    	$('#detailAddressInput').blur(function(){ //detailAddressInput의 포커스가 해제가 되면
+    		resultAddress.innerText +=  (' ' + $('#detailAddressInput').val())   //input은 resultAddress.value += 이런식인데 주소가 짤리는 현상
+    	})
+		
+//detailresult.value +=  (' '+ $('#detailAddress').val()) 이렇게 하면 안됨.. 최종주소에서 f12로 보면 주소가 안보인다.
+==========================================================
+//톰캣포트 죽이기
+C:\Windows\system32>netstat -a -o | find "LISTENING" | find "8080"
+  TCP    0.0.0.0:8080           DESKTOP-28BT612:0      LISTENING       832
+  TCP    [::]:8080              DESKTOP-28BT612:0      LISTENING       832
+
+C:\Windows\system32>taskkill /f /pid 832
+성공: 프로세스(PID 832)가 종료되었습니다.
+=============================================================
+$('#updateInputEmail').css('display', 'none') //순서가 중요한데 none으로 하고 아래명령하면 안먹힌다!!!!
+$("[name=authResultName]").attr("required" , true);   //required속성 바꾸기 (필요할때 required넣고 뺼수있음)
+=================================================================
+public ModelAndView update(MemberDTO dto) {
+		ModelAndView mav = new ModelAndView("update");
+		System.out.println("받는주소:" + dto.getAddress().split(",")[1]); // "대광초, 서울 성북구 안암로 5 대광초" 이런식으로 나와서 ,를 기준으로 그냥짜름 
+		dto.setAddress(dto.getAddress().split(",")[1]);
+===================================================================
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>반응형웹</title>
+</head>
+<body>
+<style>
+	* { padding: 0; margin: 0;}
+	li { list-style: none;}
+		/* PC버전 */
+	.wrap { width: 1000px; margin: 0 auto;}
+	.visual { height: 100px; background: purple;} 
+	.left { float: left; width: 50%; height: 100px; background: skyblue;}
+	.right { float: left; width: 50%; height: 100px; background: orange;}
+		
+	@media ( min-width:701px) and ( max-width:900px){ /* 노트북  */
+		
+		body { padding:0 20px;}
+		.wrap { width: 100%; margin:auto;}
+		
+	}
+
+	@media ( min-width:501px) and ( max-width:700px){  /* 타블렛PC */
+		
+		.wrap { width: 100%; margin:auto;}
+		.left,
+		.right { height: 200px;}
+
+	}
+	
+	
+	@media ( min-width:0px) and ( max-width:500px){  /* 모바일 */
+		
+		.wrap { width: 100%; margin:auto;}
+		.visual { height: 300px;} 
+		.left { float:none; width: 100%; height:300px;}
+		.right { float: none; width: 100%; height: 300px;}
+
+	}
+	
+
+</style>
+	
+	<div class="wrap">
+		<div class="visual"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+	</div>
+	
+</body>
+</html>
+=========================================================================
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>반응형웹</title>
+<link rel="stylesheet" href="pc.css">
+<link rel="stylesheet" media="( min-width:701px ) and ( max-width:900px )" href="notebook.css">
+<link rel="stylesheet" media="( min-width:501px ) and ( max-width:700px )" href="tablet.css">
+<link rel="stylesheet" media="( min-width:0px ) and ( max-width:500px )" href="mobile.css">
+</head>
+<body>
+<style>
+	* { padding: 0; margin: 0;}
+	li { list-style: none;}
+</style>
+	
+	<div class="visual"></div>
+	<div class="left"></div>
+	<div class="right"></div>
+	
+</body>
+</html>
+---------------
+//mobile.css
+@charset "utf-8";
+/* CSS Document */
+.visual { height: 500px;}
+.left,
+.right { position: static; width: 100%; height: 200px; }
+---------------
+//notebook.css
+@charset "utf-8";
+/* CSS Document */
+
+.right { position: static; width: 100%; height: 100px; }
+---------------
+//pc.css
+@charset "utf-8";
+/* CSS Document */
+
+.left,
+.right {position: absolute;  top: 0; width: 100px; height: 300px;}
+.left { left: 0; background:skyblue;}
+.right { right: 0; background:violet;}
+.visual { height: 300px; background: #8DEB9D;}
+=================================================================================
+//반응형웹
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>반응형웹</title>
+</head>
+<body>
+<style>
+	* { padding: 0; margin: 0;}
+	li { list-style: none;}
+	body { padding: 50px;}
+	table.type1 { border-spacing: 0; border-collapse: collapse; width: 100%;}
+	table.type1 th, table.type1 td {text-align: center;}
+	table.type1 th { background: #000; color:#fff;}
+	table.type1 tr { border: 1px solid #000; }
+	table.type1 tr:nth-child(odd) { background:#ccc;}
+	table.type1 td span { display: none;}
+
+	table.type2 { border-spacing: 0; border-collapse: collapse; width: 100%;}
+	table.type2 th, table.type2 td {text-align: center;}
+	table.type2 th { background: #000; color:#fff;}
+	table.type2 tr { border: 1px solid #000; }
+	table.type2 tr:nth-child(odd) { background:#ccc;}
+	table.type2 td span { display: none;}
+
+	table.type3 { margin: 0 0 30px; border-spacing: 0; border-collapse: collapse; width: 100%;}
+	table.type3 th { background: #000; color:#fff;}
+	table.type3 th, 
+	table.type3 td { border: 1px solid #000;  }
+
+	@media (max-width:600px){ 
+
+		/*colgroup은 col로 묶어서 각각의 셀에 쉽게 css속성을 주기 위해서이다.*/
+        /*table태그의 type1이라는 클래스안에 colgroup이 있는데 거기를 display: none 해라*/
+		table.type1 colgroup,
+		table.type1 thead { display: none;}
+		table.type1 td { display: block; text-align: left;}
+		table.type1 td:first-child,
+		table.type1 td:last-child { display: table-cell; width:80px; border: 1px solid #000;  text-align: center;}
+		table.type1 td span { padding: 0 0 0 10px; display: inline-block; width: 60px;}
+
+		.ova { width: 100%; overflow: auto;}
+		.ova table { width: 800px;}
+		
+		table.type3 colgroup { display: none;}
+        /*table class="type3" 안에 모든 th, td들 */
+		table.type3 th, table.type3 td { margin-top: -1px; display: block; float: left; box-sizing: border-box;}
+
+		table.type3 th { width: 40%;}
+		table.type3 td { width: 60%;}
+		
+		
+		
+	}
+	
+</style>
+
+	<table class="type3">
+	<colgroup>
+	<col style="width:100px;">
+	<col style="width:25%;">
+	<col style="width:100px;">
+	<col style="width:px;">
+	</colgroup>
+	<tbody>
+	<tr>
+		<th>이름</th>
+		<td>홍길동</td>
+		<th>성별</th>
+		<td>남</td>
+	</tr>
+	<tr>
+		<th>이름</th>
+		<td>홍길동</td>
+		<th>성별</th>
+		<td>남</td>
+	</tr>
+	<tr>
+		<th>이름</th>
+		<td>홍길동</td>
+		<th>성별</th>
+		<td>남</td>
+	</tr>
+	</tbody>
+	</table>
+	
+	
+	
+	
+	<table class="type1">
+	<colgroup>
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	</colgroup>
+	<thead>
+	<tr>
+		<th>선택</th>
+		<th>이름</th>
+		<th>나이</th>
+		<th>출생지</th>
+		<th>상세보기</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td><span>이름</span>아무개</td>
+		<td><span>나이</span>20세</td>
+		<td><span>출생지</span>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td>아무개</td>
+		<td>20세</td>
+		<td>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td>아무개</td>
+		<td>20세</td>
+		<td>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td>아무개</td>
+		<td>20세</td>
+		<td>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	</tbody>
+	</table>
+	
+	
+	
+<div class="ova">
+	<table class="type2">
+	<colgroup>
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	<col style="width:20%;">	
+	</colgroup>
+	<thead>
+	<tr>
+		<th>선택</th>
+		<th>이름</th>
+		<th>나이</th>
+		<th>출생지</th>
+		<th>상세보기</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td><span>이름</span>아무개</td>
+		<td><span>나이</span>20세</td>
+		<td><span>출생지</span>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td>아무개</td>
+		<td>20세</td>
+		<td>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td>아무개</td>
+		<td>20세</td>
+		<td>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	<tr>
+		<td><input type="checkbox"></td>
+		<td>아무개</td>
+		<td>20세</td>
+		<td>서울</td>
+		<td><a href="#a">보기</a></td>
+	</tr>
+	</tbody>
+	</table>
+</div>
+</body>
+</html>
+====================================================================================
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">	
+<meta name="format-detection" content="telephone=no">
+<title>반응형웹</title>
+<link rel="stylesheet" href="css/default.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" media="( min-width:501px ) and ( max-width:800px )" href="css/tablet.css">
+<link rel="stylesheet" media="( min-width:0px ) and ( max-width:500px )" href="css/mobile.css">
+</head>
+<body>
+    <ul class="gallery">
+    <li>
+        <a href="">
+            <h2><img src="images/img_list1.png" alt="나눔경영"></h2>
+            <ul>
+            <li>그룹차원의 재난구호</li>
+            <li>사회봉사활동 기금 마련 경비지원</li>
+            <li>임직원들의 사회봉사 활동지원</li>
+            </ul>
+            <span>바로가기</span>
+        </a>
+    </li>
+    <li>
+        <a href="">
+            <h2><img src="images/img_list2.png" alt="육영사업"></h2>
+            <ul>
+            <li>국제적인 산학협력 지원</li>
+            <li>학술 및 장학사업 전개</li>
+            <li>정석인하학원/정석대학을 통한 인재육성</li>
+            </ul>
+            <span>바로가기</span>
+        </a>
+    </li>
+    <li>
+        <a href="">
+            <h2><img src="images/img_list3.png" alt="환경경영"></h2>
+            <ul>
+            <li>몽골등지에서의 세계환경보호활동</li>
+            <li>기업 내 환경 경영 프로그램 운영</li>
+            </ul>
+            <span>바로가기</span>
+        </a>
+    </li>
+    <li>
+        <a href="">
+            <h2><img src="images/img_list4.png" alt="의료복지"></h2>
+            <ul>
+            <li>해외지역 의료봉사</li>
+            <li>도서지역 무료 의료봉사 수행</li>
+            <li>재해/수해지역 대상 진료봉사 활동</li>
+            </ul>
+            <span>바로가기</span>
+        </a>
+    </li>
+    </ul>
+</body>
+</html>
+-----------------------
+//index.css
+@charset "utf-8";
+body { padding: 50px; box-sizing: border-box;}
+.gallery { width: 980px;}
+.gallery > li { float: left; padding: 0 40px 40px 0; width: 470px;}
+.gallery > li:nth-child(2n) { padding-right: 0;}
+.gallery li a { display: block; position: relative;}
+.gallery li ul { padding: 30px 30px 20px; height: 81px; border:1px solid #ddd;}
+.gallery li ul li { padding: 0 0 12px 15px; background: url("../images/bu_square.png") no-repeat 0 5px; font-size: 15px; color:#333; line-height: 100%;}
+.gallery li a span { position: absolute; right: 29px; bottom: 79px; width: 81px; height: 28px; background: #00a0c6; font-size: 13px; color:#fff; line-height: 28px; text-align: center;}
+-----------------------
+//mobile.css
+@charset "utf-8";
+body { padding: 0 5px;}
+.gallery { width: 100%;}
+.gallery > li { float: none; padding: 0 0 20px 0; width: 100%; box-sizing: border-box;}
+.gallery > li img { width: 100%;}
+.gallery > li:nth-child(2n) { padding-right: 0;}
+.gallery li ul { padding: 29px 8px 0; height: 110px;}
+.gallery li ul li { padding: 0 0 8px 10px; background: url("../images/bu_square.png") no-repeat 0 3px / 4px auto; font-size: 12px;}
+.gallery li a span { right: 13px; bottom:15px;}
+-----------------------
+//tablet.css
+@charset "utf-8";
+body { padding: 0;}
+.gallery { width: 100%;}
+.gallery > li { float: left; padding: 0 22px 22px 0; width: 50%; box-sizing: border-box;}
+.gallery > li img { width: 100%;}
+.gallery > li:nth-child(2n) { padding-right: 22px;}
+.gallery li ul { padding: 29px 8px 0; height: 119px;}
+.gallery li ul li { padding: 0 0 8px 10px; background: url("../images/bu_square.png") no-repeat 0 3px / 4px auto; font-size: 12px;}
+.gallery li a span { right: 8px; bottom:25px;}
+=======================================================================================
+#)vscode -> 설정(톱니바퀴) -> zoom입력 -> 체크하면 마우스 +ctrl 확대하면 글자확대가능
+#)extension에 color picker 설치
+#)자동줄바꿈은 설정 -> word wrap 검색 -> word wrap체크 (vscode창에 맞춰서 코드가 줄바꿈됨)
+#)extension -> beautify 설치 -> 설정 (바로가기 키 클릭) -> beautify 검색 -> Beautify selection 에서 -> 연필모양 클릭해서 단축키설정
+-> 들여쓰기안된 원하는 부분 드래그 한 후에 설정한 단축키 입력하면 들여쓰기된다. 
+#) ctrl + , 는 설정으로 들어간다.
+
+#)extension에서 설치해야될것
+1. auto rename tag 설치 -> 시작태그를 바꾸면 마감태그까지 알아서 바꿔준다.
+2. html to css autocompletion -> html에서 class, id 선택자를 만들면 css파일에서 선택자를 사용할때 자동완성이된다.
+3. css peek -> html에서 선택자를 " ctrl + +" 로 또는 " alt + f11" 로 클릭하면 css파일 해당 선택자로 이동
+4. htmltagwrap-> div로 감쌀부분을 드래그해서 " alt + w " 하면 div로 묶이게된다.
+5. bracket pair colorizer2 -> 대괄호 중괄호 소괄호를 컬러로 구분한다. -> jquery사용시 좋음
+
+
+.title -> 엔터하면 <div class="title"></div>이 만들어진다.
+#title -> <div id="title"></div>
+span.price -> <span class="price"></span>
+======================================================================================
+#)비쥬얼 스튜디어 코드에서 css수정하면 젤위로 스크롤이 올라간다.(자동저장 때문에) Full Reload 현상 -> 불편하다
+
+설정 -> 확장 -> Live Server Config -> settings : Fill Reload 체크하면된다. -> 재시작
+
+========================================================================================
+ 
+
